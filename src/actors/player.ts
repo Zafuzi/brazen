@@ -1,12 +1,4 @@
-import {
-	Actor,
-	CircleCollider,
-	CollisionType,
-	Engine,
-	Keys,
-	vec,
-	Vector
-} from "excalibur";
+import { Actor, CircleCollider, CollisionType, Engine, Keys, vec, Vector } from "excalibur";
 import { Resources } from "../misc/resources";
 
 export class Player extends Actor {
@@ -26,37 +18,35 @@ export class Player extends Actor {
 
 		this.collider.set(
 			new CircleCollider({
-				radius: this.size
+				radius: this.size,
 			}),
 		);
 	}
 
 	onInitialize(engine: Engine) {
 		this.graphics.add(Resources.Ship.toSprite());
-
-
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
 		const keys = engine.input.keyboard.getKeys();
 
-		if(keys.indexOf(Keys.W) === -1 && keys.indexOf(Keys.D) === -1) {
+		if (keys.indexOf(Keys.W) === -1 && keys.indexOf(Keys.D) === -1) {
 			this.thrustEnd();
 		}
 
-		if(keys.indexOf(Keys.A) > -1) {
+		if (keys.indexOf(Keys.A) > -1) {
 			this.thrustTurnLeft();
 		}
 
-		if(keys.indexOf(Keys.D) > -1) {
+		if (keys.indexOf(Keys.D) > -1) {
 			this.thrustTurnRight();
 		}
 
-		if(keys.indexOf(Keys.W) > -1) {
+		if (keys.indexOf(Keys.W) > -1) {
 			this.thrustForwardStart();
 		}
 
-		if(keys.indexOf(Keys.S) > -1) {
+		if (keys.indexOf(Keys.S) > -1) {
 			this.thrustReverseStart();
 		}
 	}
