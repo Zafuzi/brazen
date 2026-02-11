@@ -5,6 +5,11 @@ export const Resources = {
 
 	Ship: new ImageSource("./ships/ship_b.png"),
 
+	Thrust_purple: new ImageSource("./effects/thrust_purple.png"),
+	Thrust_yellow: new ImageSource("./effects/thrust_yellow.png"),
+	Thrust_red: new ImageSource("./effects/thrust_red.png"),
+	Thrust_blue: new ImageSource("./effects/thrust_blue.png"),
+
 	Station_00: new ImageSource("./stations/station_a.png"),
 	Station_01: new ImageSource("./stations/station_b.png"),
 	Station_02: new ImageSource("./stations/station_c.png"),

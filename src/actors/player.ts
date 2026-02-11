@@ -3,6 +3,7 @@ import { Resources } from "../misc/resources";
 
 export class Player extends Actor {
 	private size = 48;
+	private thrust: Actor;
 
 	constructor() {
 		super({
@@ -17,10 +18,20 @@ export class Player extends Actor {
 				radius: this.size - 10,
 			}),
 		);
+
+		this.thrust = new Actor({
+			name: "PlayerThrust",
+			pos: vec(0, 64),
+			opacity: 0,
+			z: -1,
+		});
+
+		this.addChild(this.thrust);
 	}
 
 	onInitialize(engine: Engine) {
 		this.graphics.add(Resources.Ship.toSprite());
+		this.thrust.graphics.add(Resources.Thrust_blue.toSprite());
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -53,6 +64,7 @@ export class Player extends Actor {
 
 	thrustForwardStart = () => {
 		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
+		this.thrust.graphics.opacity = 1;
 	};
 
 	thrustReverseStart = () => {
@@ -69,5 +81,6 @@ export class Player extends Actor {
 
 	thrustEnd = () => {
 		this.acc = Vector.Zero;
+		this.thrust.graphics.opacity = 0;
 	};
 }
