@@ -12,13 +12,9 @@ export class Player extends Actor {
 			scale: vec(0.5, 0.5),
 		});
 
-		this.body.mass = 10;
-		this.body.friction = 0.9;
-		this.body.bounciness = 0.2;
-
 		this.collider.set(
 			new CircleCollider({
-				radius: this.size,
+				radius: this.size - 10,
 			}),
 		);
 	}
@@ -56,7 +52,7 @@ export class Player extends Actor {
 	}
 
 	thrustForwardStart = () => {
-		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(50);
+		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
 	};
 
 	thrustReverseStart = () => {
