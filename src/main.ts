@@ -38,5 +38,5 @@ game.start("start", {
 		game.currentScene.camera.zoom = clamp(newZoom, 0.3, 1.5);
 	});
 
-	game.toggleDebug();
+	// game.toggleDebug();
 });
