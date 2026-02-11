@@ -16,7 +16,6 @@ const game = new Engine({
 	antialiasing: true,
 	fixedUpdateFps: 30,
 	enableCanvasContextMenu: false,
-	pixelRatio: 2,
 	backgroundColor: Color.Black,
 	scenes: {
 		start: MyLevel,

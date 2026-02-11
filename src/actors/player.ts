@@ -1,7 +1,5 @@
 import {
 	Actor,
-	CircleCollider,
-	CollisionGroup,
 	CollisionType,
 	Engine,
 	ExitViewPortEvent,
