@@ -3,7 +3,7 @@ import { Resources } from "../misc/resources";
 
 export class Asteroid extends Actor {
     constructor() {
-        const scale = randomInRange(0.8, 3);
+        const scale = randomInRange(0.8, 1.2);
 
         super({
             pos: vec(randomIntInRange(-5000, -1000), randomIntInRange(-5000, 5000)),

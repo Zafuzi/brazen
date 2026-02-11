@@ -22,5 +22,6 @@ export class Mining extends Scene {
 		}
 
 		engine.currentScene.camera.strategy.lockToActor(this.ship);
+		engine.currentScene.camera.zoom = 0.8;
 	}
 }

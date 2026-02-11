@@ -4,7 +4,10 @@ export const Resources = {
 	Background: new ImageSource("./milky-way.jpg"),
 
 	Ship: new ImageSource("./ships/ship_b.png"),
-	Station: new ImageSource("./stations/station_a.png"),
+
+	Station_00: new ImageSource("./stations/station_a.png"),
+	Station_01: new ImageSource("./stations/station_b.png"),
+	Station_02: new ImageSource("./stations/station_c.png"),
 
 	Asteroid_00: new ImageSource("./asteroids/asteroid_a.png"),
 	Asteroid_01: new ImageSource("./asteroids/asteroid_b.png"),

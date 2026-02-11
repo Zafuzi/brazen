@@ -1,4 +1,5 @@
 import {
+	clamp,
 	Color,
 	DisplayMode,
 	Engine,
@@ -6,17 +7,18 @@ import {
 	KeyEvent,
 	Keys,
 	SolverStrategy,
+	Subscription,
 } from "excalibur";
 import { loader } from "./misc/resources";
-import { Mining } from "./levels/level";
+import { Mining } from "./levels/mining";
 
 const game = new Engine({
-	width: 2560,
-	height: 1440,
-	displayMode: DisplayMode.FitScreen,
+	width: 1024,
+	height: 768,
+	displayMode: DisplayMode.FitScreenAndFill,
 	pixelArt: false,
 	antialiasing: true,
-	fixedUpdateFps: 30,
+	fixedUpdateFps: 60,
 	enableCanvasContextMenu: false,
 	backgroundColor: Color.Transparent,
 	scenes: {
@@ -37,12 +39,19 @@ game
 		}),
 	})
 	.then(() => {
-
 		game.input.keyboard.on("press", (event: KeyEvent) => {
 			switch(event.key) {
 				case Keys.Backquote:
 					game.toggleDebug();
 					break;
 			}
+		});
+
+		game.input.pointers.on("wheel", (event) => {
+			const newZoom = game.currentScene.camera.zoom - event.deltaY / 1_000;
+
+			game.currentScene.camera.zoom = clamp(newZoom, 0.3, 1.5);
 		})
+
+		game.toggleDebug();
 	});
