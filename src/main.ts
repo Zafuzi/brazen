@@ -18,14 +18,13 @@ const game = new Engine({
 	displayMode: DisplayMode.FitScreenAndFill,
 	pixelArt: false,
 	antialiasing: true,
-	fixedUpdateFps: 60,
 	enableCanvasContextMenu: false,
 	backgroundColor: Color.Transparent,
 	scenes: {
 		start: Mining,
 	},
 	physics: {
-		solver: SolverStrategy.Realistic,
+		solver: SolverStrategy.Arcade,
 	},
 });
 
