@@ -6,11 +6,10 @@ import {
 	FadeInOut,
 	KeyEvent,
 	Keys,
-	SolverStrategy,
-	Subscription,
+	SolverStrategy
 } from "excalibur";
-import { loader } from "./misc/resources";
 import { Mining } from "./levels/mining";
+import { loader } from "./misc/resources";
 
 const game = new Engine({
 	width: 1024,

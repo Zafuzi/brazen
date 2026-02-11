@@ -3,8 +3,6 @@ import {
 	CircleCollider,
 	CollisionType,
 	Engine,
-	ExitViewPortEvent,
-	KeyEvent,
 	Keys,
 	vec,
 	Vector

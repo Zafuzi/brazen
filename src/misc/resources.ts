@@ -1,4 +1,4 @@
-import { DefaultLoader, ImageSource, Loader } from "excalibur";
+import { ImageSource, Loader } from "excalibur";
 
 export const Resources = {
 	Background: new ImageSource("./milky-way.jpg"),

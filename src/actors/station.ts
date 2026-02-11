@@ -10,8 +10,6 @@ import {
 import { Resources } from "../misc/resources";
 
 export class Station extends Actor {
-	private size = 512/4;
-
 	constructor() {
 		super({
 			name: "Station",
