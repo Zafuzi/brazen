@@ -3,10 +3,12 @@ import {
 	DisplayMode,
 	Engine,
 	FadeInOut,
+	KeyEvent,
+	Keys,
 	SolverStrategy,
 } from "excalibur";
 import { loader } from "./misc/resources";
-import { MyLevel } from "./levels/level";
+import { Mining } from "./levels/level";
 
 const game = new Engine({
 	width: 2560,
@@ -16,9 +18,9 @@ const game = new Engine({
 	antialiasing: true,
 	fixedUpdateFps: 30,
 	enableCanvasContextMenu: false,
-	backgroundColor: Color.Black,
+	backgroundColor: Color.Transparent,
 	scenes: {
-		start: MyLevel,
+		start: Mining,
 	},
 	physics: {
 		solver: SolverStrategy.Realistic,
@@ -34,4 +36,13 @@ game
 			color: Color.ExcaliburBlue,
 		}),
 	})
-	.then(() => {});
+	.then(() => {
+
+		game.input.keyboard.on("press", (event: KeyEvent) => {
+			switch(event.key) {
+				case Keys.Backquote:
+					game.toggleDebug();
+					break;
+			}
+		})
+	});

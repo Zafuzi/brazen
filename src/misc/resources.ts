@@ -1,11 +1,27 @@
-import { DefaultLoader, ImageSource } from "excalibur";
+import { DefaultLoader, ImageSource, Loader } from "excalibur";
 
 export const Resources = {
-	Ship: new ImageSource("./ships/ship_a.png"),
+	Background: new ImageSource("./milky-way.jpg"),
+
+	Ship: new ImageSource("./ships/ship_b.png"),
 	Station: new ImageSource("./stations/station_a.png"),
+
+	Asteroid_00: new ImageSource("./asteroids/asteroid_a.png"),
+	Asteroid_01: new ImageSource("./asteroids/asteroid_b.png"),
+	Asteroid_02: new ImageSource("./asteroids/asteroid_c.png"),
+	Asteroid_03: new ImageSource("./asteroids/asteroid_d.png"),
+	Asteroid_04: new ImageSource("./asteroids/asteroid_e.png"),
+	Asteroid_05: new ImageSource("./asteroids/asteroid_f.png"),
+	Asteroid_06: new ImageSource("./asteroids/asteroid_g.png"),
+	Asteroid_07: new ImageSource("./asteroids/asteroid_h.png"),
+
+	Star_00: new ImageSource("./stars/star_a.png"),
+	Star_01: new ImageSource("./stars/star_b.png"),
+	Star_02: new ImageSource("./stars/star_c.png"),
+	Star_03: new ImageSource("./stars/star_d.png"),
 } as const;
 
-export const loader = new DefaultLoader();
+export const loader = new Loader();
 for (const res of Object.values(Resources)) {
 	loader.addResource(res);
 }

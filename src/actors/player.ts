@@ -18,6 +18,7 @@ export class Player extends Actor {
 		super({
 			name: "Player",
 			collisionType: CollisionType.Active,
+			pos: vec(0, 0),
 			scale: vec(0.5, 0.5),
 		});
 
@@ -38,7 +39,6 @@ export class Player extends Actor {
 
 	onInitialize(engine: Engine) {
 		this.graphics.add(Resources.Ship.toSprite());
-		this.pos = vec(engine.screen.halfDrawWidth, engine.screen.halfDrawHeight);
 
 		this.on("exitviewport", (_event: ExitViewPortEvent) => {
 			if (this.pos.x < 0) {
@@ -77,6 +77,7 @@ export class Player extends Actor {
 					break;
 
 				default:
+					this.thrustEnd();
 					break;
 			}
 		});

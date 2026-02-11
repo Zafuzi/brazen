@@ -14,7 +14,7 @@ export class Station extends Actor {
 	constructor() {
 		super({
 			name: "Station",
-			pos: vec(100, 100),
+			pos: vec(400, -400),
 			collisionType: CollisionType.Fixed,
 			angularVelocity: toRadians(2),
 			scale: vec(3, 3),

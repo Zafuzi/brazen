@@ -12,9 +12,9 @@ html {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-}
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: black;
-  }
+
+  background-image: url("/milky-way.jpg");
+  background-size: 100%, 100%;
+  background-position: center center;
+  background-color: black;
 }
