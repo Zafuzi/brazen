@@ -20,6 +20,8 @@ export const OreTypes = ["Iron", "Gold", "Silver"];
 export class Asteroid extends Actor {
 	private sprite: Sprite;
 	public ore: string;
+	private startAmount: number = 100;
+	public amount: number = 100;
 
 	constructor(options?: { variation?: number } & ActorArgs) {
 		const range = 10;
@@ -36,13 +38,8 @@ export class Asteroid extends Actor {
 		this.sprite = Resources[image as keyof typeof Resources]?.toSprite({});
 
 		this.ore = OreTypes[randomIntInRange(0, OreTypes.length - 1)];
-	}
-
-	mine() {
-		this.scale = this.scale.scale(0.98);
-		if (this.scale.magnitude < 0.25) {
-			this.kill();
-		}
+		this.startAmount = randomIntInRange(1_000, 10_000);
+		this.amount = this.startAmount;
 	}
 
 	onInitialize(engine: Engine): void {
@@ -90,5 +87,16 @@ export class Asteroid extends Actor {
 		setTimeout(() => {
 			emitter.kill();
 		}, 3_000);
+	}
+
+	mine(miningRate: number) {
+		this.amount -= miningRate;
+
+		const ratio = this.amount / this.startAmount;
+		this.scale = vec(ratio, ratio);
+
+		if (ratio < 0.25) {
+			this.kill();
+		}
 	}
 }

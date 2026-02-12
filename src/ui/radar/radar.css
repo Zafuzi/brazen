@@ -1,9 +1,9 @@
-#radar {
+.radar {
 	position: absolute;
 	top: 20px;
 	right: 20px;
 	width: 400px;
-	height: 300px;
+	max-height: calc(100vh - 40px);
 
 	border-radius: 5px;
 
@@ -11,28 +11,47 @@
 	overflow-x: hidden;
 	overscroll-behavior: contain;
 
-	background-color: rgba(10, 10, 80, 0.8);
-	padding: 8px;
+	background-color: rgba(37, 37, 57, 0.486);
 	color: white;
 
 	backdrop-filter: blur(10px);
 
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
-	align-items: stretch;
-	justify-content: start;
-}
 
-#rader h2 {
-	text-align: center;
-}
+	h2 {
+		background-color: rgba(10, 10, 10, 0.8);
+		padding: 8px;
+	}
 
-.radar_item {
-	padding: 8px 16px;
-}
+	h3 {
+		background-color: rgba(10, 10, 10, 0.7);
+		padding: 8px;
+	}
 
-.radar_item:hover {
-	background-color: blue;
-	cursor: pointer;
+	.radar_overview {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.radar_asteroids {
+		display: flex;
+		flex-direction: column;
+		max-height: 300px;
+		overflow: auto;
+	}
+
+	.radar_item {
+		padding: 8px;
+		cursor: pointer;
+
+		.active {
+			background-color: blue;
+		}
+
+		&:hover {
+			background-color: blue;
+			opacity: 0.8;
+		}
+	}
 }

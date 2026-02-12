@@ -19,4 +19,37 @@ html {
 	background-size: 100%, 100%;
 	background-position: center center;
 	background-color: black;
+
+	font-size: 14px;
+	font-weight: 400;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.panel {
+	background-color: rgba(10, 10, 10, 0.8);
+	border: 2px solid rgba(10, 10, 10, 0.8);
+	color: #fafafa;
+	backdrop-filter: blur(10px);
+
+	min-width: 50px;
+	min-height: 50px;
+
+	border-radius: 5px;
+}
+
+button {
+	background-color: rgba(132, 12, 12, 0.769);
+	border: 2px solid rgba(10, 10, 10, 0.8);
+	color: #fafafa;
+	font-weight: bold;
+	font-size: 1.5rem;
+	padding: 8px 16px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.hid {
+	display: none;
+	visibility: none;
+	opacity: 0;
 }

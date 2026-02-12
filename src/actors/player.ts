@@ -1,28 +1,16 @@
-import {
-	Actor,
-	CircleCollider,
-	CollisionType,
-	Engine,
-	Entity,
-	Keys,
-	Shape,
-	Sprite,
-	toRadians,
-	vec,
-	Vector,
-} from "excalibur";
+import { Actor, CircleCollider, CollisionType, Engine, Entity, Keys, Sprite, toRadians, vec, Vector } from "excalibur";
 import { Resources } from "../misc/resources";
 import { Asteroid } from "./asteroid";
 
 export class Player extends Actor {
 	private size = 48;
 	private thrust: Actor;
-	private rangeSensor: Actor;
 	private miningTarget: Asteroid | undefined;
 	private beamLine: Sprite;
 	private miningBeam: Actor;
 	private miningRange: number = 1_000;
-	private selectedItem: Actor | undefined;
+	private miningRate: number = 0.25;
+	public selectedItem: Actor | undefined;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -49,23 +37,6 @@ export class Player extends Actor {
 		});
 
 		this.addChild(this.thrust);
-
-		this.rangeSensor = new Actor({
-			pos: vec(0, 0),
-			collisionType: CollisionType.Passive,
-		});
-
-		this.rangeSensor.collider.set(Shape.Circle(this.miningRange));
-
-		this.addChild(this.rangeSensor);
-
-		this.rangeSensor.on("collisionstart", (evt) => {
-			this.currentCollisions.add(evt.other.owner);
-		});
-
-		this.rangeSensor.on("collisionend", (evt) => {
-			this.currentCollisions.delete(evt.other.owner);
-		});
 
 		this.miningBeam = new Actor({
 			z: -1,
@@ -98,7 +69,11 @@ export class Player extends Actor {
 			this.thrustEnd();
 		}
 
-		if (keys.indexOf(Keys.Space) > -1) {
+		if (keys.indexOf(Keys.Escape) > -1) {
+			this.deselectItem();
+		}
+
+		if (keys.indexOf(Keys.X) > -1) {
 			this.vel = this.vel.scale(0.98);
 		}
 
@@ -132,26 +107,32 @@ export class Player extends Actor {
 			this.miningTarget = undefined;
 		}
 
-		const target = this.miningTarget;
+		if (this.selectedItem) {
+			this.rotateTo(this.selectedItem, elapsed);
 
-		if (target?.pos) {
+			if (!this.selectedItem.isActive) {
+				this.deselectItem();
+			}
+		}
+
+		if (this.selectedItem instanceof Asteroid && this.selectedItem?.pos) {
 			const a = this.pos;
-			const b = target.pos;
+			const b = this.selectedItem.pos;
 
 			const delta = b.sub(a);
 			const dist = delta.magnitude;
+			if (dist <= this.miningRange) {
+				this.miningBeam.pos = a;
+				this.miningBeam.rotation = Math.atan2(delta.y, delta.x) - Math.PI / 2;
+				this.beamLine.destSize.height = dist;
 
-			this.miningBeam.pos = a;
-			this.miningBeam.rotation = Math.atan2(delta.y, delta.x) - Math.PI / 2;
-			this.beamLine.destSize.height = dist;
-			this.beamLine.opacity = 1;
-			target.mine();
+				this.selectedItem.mine(this.miningRate);
+				this.beamLine.opacity = 1;
+			} else {
+				this.beamLine.opacity = 0;
+			}
 		} else {
 			this.beamLine.opacity = 0;
-		}
-
-		if (this.selectedItem) {
-			this.rotateTo(this.selectedItem, elapsed);
 		}
 	}
 
@@ -170,12 +151,10 @@ export class Player extends Actor {
 
 	thrustTurnLeft = () => {
 		this.angularVelocity += -0.1;
-		this.deselectItem();
 	};
 
 	thrustTurnRight = () => {
 		this.angularVelocity += 0.1;
-		this.deselectItem();
 	};
 
 	thrustEnd = () => {

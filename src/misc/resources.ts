@@ -1,4 +1,4 @@
-import { ImageSource, Loader } from "excalibur";
+import { DefaultLoader, ImageSource } from "excalibur";
 
 export const Resources = {
 	Background: new ImageSource("./milky-way.jpg"),
@@ -29,7 +29,7 @@ export const Resources = {
 	Star_03: new ImageSource("./stars/star_d.png"),
 } as const;
 
-export const loader = new Loader();
+export const loader = new DefaultLoader();
 for (const res of Object.values(Resources)) {
 	loader.addResource(res);
 }

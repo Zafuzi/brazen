@@ -1,6 +1,7 @@
-import { clamp, Color, DisplayMode, Engine, FadeInOut, KeyEvent, Keys, SolverStrategy } from "excalibur";
+import { clamp, Color, DisplayMode, Engine, FadeInOut, KeyEvent, Keys, PointerScope, SolverStrategy } from "excalibur";
 import { Mining } from "./levels/mining";
 import { loader } from "./misc/resources";
+import { MainMenu } from "./ui/MainMenu/MainMenu";
 
 const game = new Engine({
 	width: 1280,
@@ -11,12 +12,16 @@ const game = new Engine({
 	enableCanvasContextMenu: false,
 	backgroundColor: Color.Transparent,
 	scenes: {
-		start: Mining,
+		start: MainMenu,
 	},
 	physics: {
 		solver: SolverStrategy.Arcade,
 	},
+	canvasElementId: "game",
+	pointerScope: PointerScope.Canvas,
 });
+
+game.add("Mining", Mining);
 
 game.start("start", {
 	loader,
@@ -36,9 +41,6 @@ game.start("start", {
 
 	game.input.pointers.on("wheel", (event) => {
 		const newZoom = game.currentScene.camera.zoom - event.deltaY / 1_000;
-
 		game.currentScene.camera.zoom = clamp(newZoom, 0.3, 1.5);
 	});
-
-	// game.toggleDebug();
 });
