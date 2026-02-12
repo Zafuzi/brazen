@@ -3,6 +3,8 @@ import { Mining } from "./levels/mining";
 import { loader } from "./misc/resources";
 
 const game = new Engine({
+	width: 1280,
+	height: 720,
 	displayMode: DisplayMode.FillScreen,
 	pixelArt: false,
 	antialiasing: true,

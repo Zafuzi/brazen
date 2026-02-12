@@ -6,19 +6,16 @@ import { Station } from "../actors/station";
 export class Mining extends Scene {
 	private ship: Player = new Player();
 	private station: Station = new Station();
-	private asteroids: Asteroid[] = [];
 
 	override onInitialize(engine: Engine): void {
 		this.add(this.ship);
 		this.add(this.station);
 
-		for (let i = 0; i < 100; i++) {
-			const asteroid = new Asteroid();
-			this.asteroids.push(asteroid);
-			this.add(asteroid);
+		for (let i = 0; i < 1_000; i++) {
+			this.add(new Asteroid());
 		}
 
 		engine.currentScene.camera.strategy.lockToActor(this.ship);
-		engine.currentScene.camera.zoom = 0.8;
+		engine.currentScene.camera.zoom = 1;
 	}
 }
