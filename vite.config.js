@@ -1,3 +1,4 @@
+import { preact } from "@preact/preset-vite";
 import { defineConfig } from "vite";
 
 const tiledPlugin = () => {
@@ -15,7 +16,7 @@ const tiledPlugin = () => {
 
 export default defineConfig({
 	base: "./",
-	plugins: [tiledPlugin()],
+	plugins: [tiledPlugin(), preact()],
 	optimizeDeps: {
 		exclude: ["excalibur"],
 	},

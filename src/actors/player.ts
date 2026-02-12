@@ -22,6 +22,7 @@ export class Player extends Actor {
 	private beamLine: Sprite;
 	private miningBeam: Actor;
 	private miningRange: number = 1_000;
+	private selectedItem: Actor | undefined;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -148,6 +149,10 @@ export class Player extends Actor {
 		} else {
 			this.beamLine.opacity = 0;
 		}
+
+		if (this.selectedItem) {
+			this.rotateTo(this.selectedItem, elapsed);
+		}
 	}
 
 	onPostUpdate(engine: Engine, elapsed: number): void {
@@ -165,14 +170,40 @@ export class Player extends Actor {
 
 	thrustTurnLeft = () => {
 		this.angularVelocity += -0.1;
+		this.deselectItem();
 	};
 
 	thrustTurnRight = () => {
 		this.angularVelocity += 0.1;
+		this.deselectItem();
 	};
 
 	thrustEnd = () => {
 		this.acc = Vector.Zero;
 		this.thrust.graphics.opacity = 0;
+	};
+
+	rotateTo = (target: Actor, elapsed: number) => {
+		const delta = target.pos.sub(this.pos);
+
+		const targetAngle = Math.atan2(delta.y, delta.x);
+
+		// Find smallest angular difference
+		let diff = targetAngle - this.rotation;
+
+		// Wrap to [-PI, PI]
+		diff = Math.atan2(Math.sin(diff), Math.cos(diff)) + Math.PI / 2;
+
+		const rotationSpeed = 2; // radians per second
+
+		this.rotation += diff * Math.min(1, (rotationSpeed * elapsed) / 1000);
+	};
+
+	selectItem = (target: Actor) => {
+		this.selectedItem = target;
+	};
+
+	deselectItem = () => {
+		this.selectedItem = undefined;
 	};
 }

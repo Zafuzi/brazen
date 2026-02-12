@@ -15,8 +15,11 @@ import {
 } from "excalibur";
 import { Resources } from "../misc/resources";
 
+export const OreTypes = ["Iron", "Gold", "Silver"];
+
 export class Asteroid extends Actor {
 	private sprite: Sprite;
+	public ore: string;
 
 	constructor(options?: { variation?: number } & ActorArgs) {
 		const range = 10;
@@ -31,10 +34,12 @@ export class Asteroid extends Actor {
 
 		const image = `Asteroid_0${options?.variation ?? randomIntInRange(0, 7)}`;
 		this.sprite = Resources[image as keyof typeof Resources]?.toSprite({});
+
+		this.ore = OreTypes[randomIntInRange(0, OreTypes.length - 1)];
 	}
 
 	mine() {
-		this.scale = this.scale.scale(0.999);
+		this.scale = this.scale.scale(0.98);
 		if (this.scale.magnitude < 0.25) {
 			this.kill();
 		}
