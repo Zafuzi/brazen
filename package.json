@@ -22,7 +22,8 @@
 	"homepage": "",
 	"dependencies": {
 		"excalibur": "0.32.0",
-		"less": "^4.5.1"
+		"less": "^4.5.1",
+		"rplc8": "^1.1.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.10.2",

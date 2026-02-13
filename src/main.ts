@@ -12,7 +12,7 @@ const game = new Engine({
 	enableCanvasContextMenu: false,
 	backgroundColor: Color.Transparent,
 	scenes: {
-		start: MainMenu,
+		start: Mining,
 	},
 	physics: {
 		solver: SolverStrategy.Arcade,
@@ -34,7 +34,7 @@ game.start("start", {
 			case Keys.Backquote:
 				game.toggleDebug();
 				break;
-			case Keys.Escape:
+			case Keys.P:
 				game.director.goToScene("MainMenu");
 				break;
 			case Keys.O:

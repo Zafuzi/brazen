@@ -10,7 +10,20 @@
 	<body>
 		<div id="root">
 			<canvas id="game"></canvas>
-			<div id="ui"></div>
+			<div class="hid" id="ui"></div>
+
+			<div class="panel selectedItem hid">
+				<img src="__img__" />
+
+				<h3>__title__</h3>
+
+				<div>
+					<p>__amount__</p>
+					<p>__distance__</p>
+				</div>
+			</div>
+
+			<div class="panel radar hid"></div>
 		</div>
 		<script type="module" src="./src/main.ts"></script>
 	</body>

@@ -1,5 +1,6 @@
 import { Actor, CircleCollider, CollisionType, Engine, Entity, Keys, Sprite, toRadians, vec, Vector } from "excalibur";
 import { Resources } from "../misc/resources";
+import { updateSelected } from "../ui/SelectedItem/selectedItem";
 import { Asteroid } from "./asteroid";
 
 export class Player extends Actor {
@@ -11,6 +12,7 @@ export class Player extends Actor {
 	private miningRange: number = 1_000;
 	private miningRate: number = 0.25;
 	public selectedItem: Actor | undefined;
+	private autoPilotEnabled: boolean = false;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -69,7 +71,7 @@ export class Player extends Actor {
 			this.thrustEnd();
 		}
 
-		if (keys.indexOf(Keys.R) > -1) {
+		if (keys.indexOf(Keys.Escape) > -1) {
 			this.deselectItem();
 		}
 
@@ -108,10 +110,12 @@ export class Player extends Actor {
 		}
 
 		if (this.selectedItem) {
-			this.rotateTo(this.selectedItem, elapsed);
-
 			if (!this.selectedItem.isActive) {
 				this.deselectItem();
+			}
+
+			if (this.autoPilotEnabled) {
+				this.rotateTo(this.selectedItem, elapsed);
 			}
 		}
 
@@ -138,6 +142,7 @@ export class Player extends Actor {
 
 	onPostUpdate(engine: Engine, elapsed: number): void {
 		this.angularVelocity *= 0.98;
+		updateSelected(this.selectedItem, this);
 	}
 
 	thrustForwardStart = () => {
@@ -151,14 +156,17 @@ export class Player extends Actor {
 
 	thrustTurnLeft = () => {
 		this.angularVelocity += -0.1;
+		this.autoPilotEnabled = false;
 	};
 
 	thrustTurnRight = () => {
 		this.angularVelocity += 0.1;
+		this.autoPilotEnabled = false;
 	};
 
 	thrustEnd = () => {
 		this.acc = Vector.Zero;
+		this.vel = this.vel.scale(0.99);
 		this.thrust.graphics.opacity = 0;
 	};
 
@@ -180,6 +188,7 @@ export class Player extends Actor {
 
 	selectItem = (target: Actor) => {
 		this.selectedItem = target;
+		this.autoPilotEnabled = true;
 	};
 
 	deselectItem = () => {
