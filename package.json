@@ -7,7 +7,8 @@
 		"dev": "vite",
 		"start": "vite",
 		"build": "prettier -w .; tsc && vite build",
-		"serve": "vite preview"
+		"serve": "vite preview",
+		"deploy": "npm run build ; ./deploy.sh -p"
 	},
 	"repository": {},
 	"keywords": [
