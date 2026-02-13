@@ -187,6 +187,10 @@ export class Player extends Actor {
 	};
 
 	rotateTo = (target: Actor, elapsed: number) => {
+		if (!target) {
+			return;
+		}
+
 		const delta = target.pos.sub(this.pos);
 
 		const targetAngle = Math.atan2(delta.y, delta.x);
