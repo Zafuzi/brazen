@@ -25,7 +25,7 @@ export class Player extends Actor {
 	private miningTarget: Asteroid | undefined;
 	private beamLine: Sprite;
 	private miningBeam: Actor;
-	private miningRange: number = 1_000;
+	private miningRange: number = 5_000;
 	private miningRate: number = 0.25;
 	public selectedItem: Actor | undefined;
 	private autoPilotEnabled: boolean = false;
