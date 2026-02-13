@@ -146,11 +146,14 @@ export class Player extends Actor {
 		if (this.selectedItem) {
 			if (!this.selectedItem.isActive) {
 				this.deselectItem();
+				this.miningSound.volume = 0;
 			}
 
 			if (this.autoPilotEnabled) {
 				this.rotateTo(this.selectedItem, elapsed);
 			}
+		} else {
+			this.miningSound.volume = 0;
 		}
 
 		if (this.selectedItem instanceof Asteroid && this.selectedItem?.pos) {
@@ -168,6 +171,7 @@ export class Player extends Actor {
 				this.miningSound.volume = 0.5;
 				this.beamLine.opacity = 1;
 			} else {
+				this.miningSound.volume = 0;
 				this.beamLine.opacity = 0;
 			}
 		} else {
