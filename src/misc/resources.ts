@@ -1,8 +1,6 @@
 import { DefaultLoader, ImageSource, Sound } from "excalibur";
 
 export const Images = {
-	Background: new ImageSource("./milky-way.jpg"),
-
 	Ship: new ImageSource("./ships/ship_b.png"),
 
 	Thrust_purple: new ImageSource("./effects/thrust_purple.png"),
