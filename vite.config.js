@@ -22,6 +22,7 @@ export default defineConfig({
 	build: {
 		assetsInlineLimit: 0,
 		sourcemap: true,
+		chunkSizeWarningLimit: 1_000,
 		rollupOptions: {
 			output: {
 				format: "umd",

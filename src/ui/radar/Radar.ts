@@ -1,7 +1,6 @@
 import { Actor, CollisionType, Color, Engine, Label, Rectangle, ScreenElement, vec } from "excalibur";
 import { Asteroid } from "../../actors/asteroid";
 import { Player } from "../../actors/player";
-import { Station } from "../../actors/station";
 import { formatDistance, formatNumberFast } from "../../lib/math";
 
 export class Radar extends ScreenElement {
@@ -18,7 +17,7 @@ export class Radar extends ScreenElement {
 		},
 	};
 
-	constructor(player: Player, asteroids: Asteroid[], station: Station) {
+	constructor(player: Player) {
 		super({
 			pos: vec(16, 32),
 			anchor: vec(0, 0),

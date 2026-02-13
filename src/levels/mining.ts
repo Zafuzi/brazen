@@ -43,7 +43,7 @@ export class Mining extends Scene {
 		engine.currentScene.camera.strategy.lockToActor(this.player);
 		engine.currentScene.camera.zoom = 1;
 
-		this.add(new Radar(this.player, this.asteroids, this.station));
+		this.add(new Radar(this.player));
 	}
 
 	override onPreUpdate(engine: Engine, elapsedMs: number): void {}

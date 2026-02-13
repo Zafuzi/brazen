@@ -13,13 +13,7 @@
 		"noEmit": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": false,
-		"noImplicitReturns": true,
-		"jsx": "react-jsx",
-		"paths": {
-			"react": ["./node_modules/preact/compat/"],
-			"react-dom": ["./node_modules/preact/compat/"]
-		},
-		"jsxImportSource": "preact"
+		"noImplicitReturns": true
 	},
 	"include": ["./src"]
 }
