@@ -35,7 +35,11 @@ game.start("start", {
 				game.toggleDebug();
 				break;
 			case Keys.P:
-				game.director.goToScene("MainMenu");
+				if (game.director.currentSceneName === "MainMenu") {
+					game.director.goToScene("Mining");
+				} else {
+					game.director.goToScene("MainMenu");
+				}
 				break;
 			case Keys.O:
 				game.director.goToScene("OreStation");

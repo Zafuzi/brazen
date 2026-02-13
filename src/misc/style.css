@@ -48,6 +48,7 @@ html {
 
 	border-radius: 5px;
 	pointer-events: all;
+	z-index: 1;
 }
 
 .panel::-webkit-scrollbar {

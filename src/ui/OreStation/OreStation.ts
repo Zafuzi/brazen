@@ -14,6 +14,7 @@ export class OreStation extends Scene {
 		title.textContent = "Insert the fuglord";
 
 		this.ui.classList.add("panel", "OreStation");
+		this.ui.classList.remove("hid");
 
 		const btnStart = document.createElement("button");
 		btnStart.className = "button button--start";
@@ -32,6 +33,7 @@ export class OreStation extends Scene {
 			throw new Error("Failed to deactivate UI");
 		}
 		this.ui.classList.remove("OreStation");
+		this.ui.classList.add("hid");
 		this.ui.innerHTML = "";
 	}
 }
