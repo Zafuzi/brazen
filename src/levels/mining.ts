@@ -20,6 +20,8 @@ export class Mining extends Scene {
 		this.station.events.on("pointerup", () => {
 			this.player.selectItem(this.station);
 		});
+
+		document.querySelector(".tutorial")?.classList.remove("hid");
 	}
 
 	override onInitialize(engine: Engine): void {

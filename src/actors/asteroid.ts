@@ -30,7 +30,10 @@ export class Asteroid extends Actor {
 			collisionType: CollisionType.Active,
 			angularVelocity: randomInRange(-Math.PI, Math.PI),
 			vel: vec(randomInRange(-range, range), randomInRange(-range, range)),
-			pos: vec(randomInRange(-5_000, -200), randomInRange(-100_000, 100_000)),
+			pos: vec(
+				randomIntInRange(0, 1) ? randomInRange(-50_000, -10_000) : randomInRange(10_000, 50_000),
+				randomInRange(-100_000, 100_000),
+			),
 			...options,
 		});
 

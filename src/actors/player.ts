@@ -50,7 +50,7 @@ export class Player extends Actor {
 			scale: vec(1, 1),
 		});
 
-		this.beamLine = Resources.Thrust_red.toSprite({
+		this.beamLine = Resources.Thrust_purple.toSprite({
 			destSize: {
 				width: 10,
 				height: this.miningRange,
