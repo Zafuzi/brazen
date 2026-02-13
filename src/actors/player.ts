@@ -108,7 +108,7 @@ export class Player extends Actor {
 			this.deselectItem();
 		}
 
-		if (keys.indexOf(Keys.X) > -1 || keys.indexOf(Keys.Period) > -1) {
+		if (keys.indexOf(Keys.X) > -1 || keys.indexOf(Keys.ShiftRight) > -1 || keys.indexOf(Keys.ShiftLeft) > -1) {
 			this.vel = this.vel.scale(0.98);
 			this.angularVelocity *= 0.98;
 		}
@@ -186,9 +186,6 @@ export class Player extends Actor {
 
 		if (this.updateTick % 5 === 0) {
 			updatePlayer(this);
-		}
-
-		if (this.updateTick % 20 === 0) {
 			updateSelected(this.selectedItem, this);
 			this.updateTick = 0;
 		}
