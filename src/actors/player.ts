@@ -62,7 +62,7 @@ export class Player extends Actor {
 
 	onInitialize(engine: Engine) {
 		this.graphics.add(Resources.Ship.toSprite());
-		this.thrust.graphics.add(Resources.Thrust_purple.toSprite());
+		this.thrust.graphics.add(Resources.Thrust_blue.toSprite());
 		engine.currentScene.world.add(this.miningBeam);
 
 		updateSelected(this.selectedItem, this);
@@ -85,19 +85,19 @@ export class Player extends Actor {
 			this.angularVelocity *= 0.98;
 		}
 
-		if (keys.indexOf(Keys.A) > -1) {
+		if (keys.indexOf(Keys.A) > -1 || keys.indexOf(Keys.ArrowLeft) > -1) {
 			this.thrustTurnLeft();
 		}
 
-		if (keys.indexOf(Keys.D) > -1) {
+		if (keys.indexOf(Keys.D) > -1 || keys.indexOf(Keys.ArrowRight) > -1) {
 			this.thrustTurnRight();
 		}
 
-		if (keys.indexOf(Keys.W) > -1) {
+		if (keys.indexOf(Keys.W) > -1 || keys.indexOf(Keys.ArrowUp) > -1) {
 			this.thrustForwardStart();
 		}
 
-		if (keys.indexOf(Keys.S) > -1) {
+		if (keys.indexOf(Keys.S) > -1 || keys.indexOf(Keys.ArrowDown) > -1) {
 			this.thrustReverseStart();
 		}
 
