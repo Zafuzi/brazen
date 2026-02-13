@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 export function updateRadar(actors: Actor[], station: Station, player: Player) {
 	if (radar) {
 		const massage = actors
+			.filter((a) => a.isActive)
 			.sort((a, b) => {
 				return player.pos.distance(a.pos) - player.pos.distance(b.pos);
 			})
