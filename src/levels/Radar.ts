@@ -1,7 +1,7 @@
 import { Actor, CollisionType, Color, Engine, Label, Rectangle, ScreenElement, vec } from "excalibur";
-import { Asteroid } from "../../actors/asteroid";
-import { Player } from "../../actors/player";
-import { formatDistance, formatNumberFast } from "../../lib/math";
+import { Asteroid } from "../actors/asteroid";
+import { Player } from "../actors/player";
+import { formatDistance, formatNumberFast } from "../lib/math";
 
 export class Radar extends ScreenElement {
 	private player: Player;

@@ -2,7 +2,7 @@ import { Engine, Scene } from "excalibur";
 import { Asteroid } from "../actors/asteroid";
 import { Player } from "../actors/player";
 import { Station } from "../actors/station";
-import { Radar } from "../ui/Radar/Radar";
+import { Radar } from "./Radar";
 
 export class Mining extends Scene {
 	public player = new Player();
