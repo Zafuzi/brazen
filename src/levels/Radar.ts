@@ -85,8 +85,9 @@ export class Radar extends ScreenElement {
 		const selectedItem = this.player.selectedItem;
 
 		name.text = selectedItem?.name ?? "";
-
 		if (selectedItem instanceof Asteroid) {
+			name.text = selectedItem.ore;
+
 			amount.text = "Amount: " + formatNumberFast((selectedItem as Asteroid)?.amount);
 
 			distance.text = "Distance: " + formatDistance(this.player.pos.distance(this.player.selectedItem?.pos));
