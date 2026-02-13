@@ -1,5 +1,26 @@
 import { Actor, CollisionType, CompositeCollider, Engine, Shape, toRadians, vec } from "excalibur";
+import { OreType, OreTypes } from "./asteroid";
 import { Images } from "../misc/resources";
+
+export type OrePrice = {
+	key: OreType;
+	sellPrice: number;
+	buyPrice: number;
+};
+
+const getBaseOrePrice = (ore: OreType, index: number): number => {
+	const nameHash = ore.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+	return 20 + ((nameHash + index * 17) % 481);
+};
+
+export const OrePrices: OrePrice[] = OreTypes.map((key, index) => {
+	const sellPrice = getBaseOrePrice(key, index);
+	return {
+		key,
+		sellPrice,
+		buyPrice: Math.round(sellPrice * 1.2),
+	};
+});
 
 export class Station extends Actor {
 	constructor() {

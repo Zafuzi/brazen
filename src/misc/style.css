@@ -113,6 +113,8 @@ button {
 	font-size: 18px;
 	padding: 8px;
 
+	font-size: 10px;
+
 	p {
 		display: flex;
 		flex-flow: row wrap;
