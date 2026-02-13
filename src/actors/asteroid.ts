@@ -13,7 +13,7 @@ import {
 	Sprite,
 	vec,
 } from "excalibur";
-import { Resources } from "../misc/resources";
+import { Images } from "../misc/resources";
 
 export const OreTypes = ["Iron", "Gold", "Silver"];
 
@@ -38,7 +38,7 @@ export class Asteroid extends Actor {
 		});
 
 		const image = `Asteroid_0${options?.variation ?? randomIntInRange(0, 7)}`;
-		this.sprite = Resources[image as keyof typeof Resources]?.toSprite({});
+		this.sprite = Images[image as keyof typeof Images]?.toSprite({});
 
 		this.ore = OreTypes[randomIntInRange(0, OreTypes.length - 1)];
 		this.startAmount = randomIntInRange(1_000, 10_000);

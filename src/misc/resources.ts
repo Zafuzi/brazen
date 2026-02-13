@@ -1,6 +1,6 @@
 import { DefaultLoader, ImageSource, Sound } from "excalibur";
 
-export const Resources = {
+export const Images = {
 	Background: new ImageSource("./milky-way.jpg"),
 
 	Ship: new ImageSource("./ships/ship_b.png"),
@@ -9,8 +9,6 @@ export const Resources = {
 	Thrust_yellow: new ImageSource("./effects/thrust_yellow.png"),
 	Thrust_red: new ImageSource("./effects/thrust_red.png"),
 	Thrust_blue: new ImageSource("./effects/thrust_blue.png"),
-
-	ThrustSound: new Sound("./sounds/thrust.wav"),
 
 	Station_00: new ImageSource("./stations/station_a.png"),
 	Station_01: new ImageSource("./stations/station_b.png"),
@@ -31,7 +29,16 @@ export const Resources = {
 	Star_03: new ImageSource("./stars/star_d.png"),
 } as const;
 
+export const Sounds = {
+	ThrustSound: new Sound("./sounds/thrust.wav"),
+};
+
 export const loader = new DefaultLoader();
-for (const res of Object.values(Resources)) {
+
+for (const res of Object.values(Images)) {
+	loader.addResource(res);
+}
+
+for (const res of Object.values(Sounds)) {
 	loader.addResource(res);
 }

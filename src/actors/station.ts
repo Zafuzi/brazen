@@ -1,5 +1,5 @@
 import { Actor, CollisionType, CompositeCollider, Engine, Shape, toRadians, vec } from "excalibur";
-import { Resources } from "../misc/resources";
+import { Images } from "../misc/resources";
 
 export class Station extends Actor {
 	constructor() {
@@ -12,7 +12,7 @@ export class Station extends Actor {
 	}
 
 	onInitialize(engine: Engine): void {
-		const image = Resources.Station_00.toSprite();
+		const image = Images.Station_00.toSprite();
 
 		this.graphics.add(image);
 

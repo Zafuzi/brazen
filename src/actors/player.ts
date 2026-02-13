@@ -11,7 +11,7 @@ import {
 	vec,
 	Vector,
 } from "excalibur";
-import { Resources } from "../misc/resources";
+import { Images, Sounds } from "../misc/resources";
 import { updatePlayer } from "../ui/PlayerHud/PlayerHud";
 import { updateSelected } from "../ui/SelectedItem/SelectedItem";
 import { Asteroid } from "./asteroid";
@@ -27,7 +27,7 @@ export class Player extends Actor {
 	public selectedItem: Actor | undefined;
 	private autoPilotEnabled: boolean = false;
 	private selectHook: Function | undefined;
-	private thrustSound: Sound = Resources.ThrustSound;
+	private thrustSound: Sound = Sounds.ThrustSound;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -63,7 +63,7 @@ export class Player extends Actor {
 			scale: vec(1, 1),
 		});
 
-		this.beamLine = Resources.Thrust_purple.toSprite({
+		this.beamLine = Images.Thrust_purple.toSprite({
 			destSize: {
 				width: 10,
 				height: this.miningRange,
@@ -74,8 +74,8 @@ export class Player extends Actor {
 	}
 
 	onInitialize(engine: Engine) {
-		this.graphics.add(Resources.Ship.toSprite());
-		this.thrust.graphics.add(Resources.Thrust_blue.toSprite());
+		this.graphics.add(Images.Ship.toSprite());
+		this.thrust.graphics.add(Images.Thrust_blue.toSprite());
 		engine.currentScene.world.add(this.miningBeam);
 
 		updateSelected(this.selectedItem, this);
@@ -187,16 +187,19 @@ export class Player extends Actor {
 
 	thrustReverseStart = () => {
 		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(-10);
+		this.thrustSound.volume = 0.2;
 	};
 
 	thrustTurnLeft = () => {
 		this.angularVelocity += -0.1;
 		this.autoPilotEnabled = false;
+		this.thrustSound.volume = 0.3;
 	};
 
 	thrustTurnRight = () => {
 		this.angularVelocity += 0.1;
 		this.autoPilotEnabled = false;
+		this.thrustSound.volume = 0.3;
 	};
 
 	thrustEnd = () => {
