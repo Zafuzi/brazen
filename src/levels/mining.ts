@@ -18,7 +18,6 @@ export class Mining extends Scene {
 	}
 
 	override onInitialize(engine: Engine): void {
-		this.add(new Radar());
 		this.add(this.player);
 		this.add(this.station);
 
@@ -43,6 +42,8 @@ export class Mining extends Scene {
 
 		engine.currentScene.camera.strategy.lockToActor(this.player);
 		engine.currentScene.camera.zoom = 1;
+
+		this.add(new Radar(this.player, this.asteroids, this.station));
 	}
 
 	override onPreUpdate(engine: Engine, elapsedMs: number): void {}

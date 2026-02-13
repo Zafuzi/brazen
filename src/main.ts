@@ -1,11 +1,11 @@
-import { clamp, Color, DisplayMode, Engine, FadeInOut, KeyEvent, Keys, PointerScope, SolverStrategy } from "excalibur";
+import { clamp, Color, DisplayMode, Engine, KeyEvent, Keys, PointerScope, SolverStrategy } from "excalibur";
 import { Mining } from "./levels/mining";
 import { loader } from "./misc/resources";
+import { FuelDepot } from "./ui/FuelDepot/FuelDepot";
 import { MainMenu } from "./ui/MainMenu/MainMenu";
+import { OreStation } from "./ui/OreStation/OreStation";
 
 const game = new Engine({
-	width: 1280,
-	height: 720,
 	displayMode: DisplayMode.FillScreen,
 	pixelArt: false,
 	antialiasing: true,
@@ -21,20 +21,30 @@ const game = new Engine({
 	pointerScope: PointerScope.Canvas,
 });
 
+game.add("MainMenu", MainMenu);
+game.add("OreStation", OreStation);
+game.add("FuelDepot", FuelDepot);
 game.add("Mining", Mining);
 
 game.start("start", {
 	loader,
-	inTransition: new FadeInOut({
-		duration: 500,
-		direction: "in",
-		color: Color.ExcaliburBlue,
-	}),
 }).then(() => {
 	game.input.keyboard.on("press", (event: KeyEvent) => {
 		switch (event.key) {
 			case Keys.Backquote:
 				game.toggleDebug();
+				break;
+			case Keys.Escape:
+				game.director.goToScene("MainMenu");
+				break;
+			case Keys.O:
+				game.director.goToScene("OreStation");
+				break;
+			case Keys.M:
+				game.director.goToScene("Mining");
+				break;
+			case Keys.F:
+				game.director.goToScene("FuelDepot");
 				break;
 		}
 	});

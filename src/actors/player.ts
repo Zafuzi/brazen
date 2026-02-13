@@ -69,7 +69,7 @@ export class Player extends Actor {
 			this.thrustEnd();
 		}
 
-		if (keys.indexOf(Keys.Escape) > -1) {
+		if (keys.indexOf(Keys.R) > -1) {
 			this.deselectItem();
 		}
 
