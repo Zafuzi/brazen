@@ -29,6 +29,7 @@ game.add("Mining", Mining);
 game.start("start", {
 	loader,
 }).then(() => {
+	let oldScene = game.director.currentSceneName;
 	game.input.keyboard.on("press", (event: KeyEvent) => {
 		switch (event.key) {
 			case Keys.Backquote:
@@ -36,10 +37,12 @@ game.start("start", {
 				break;
 			case Keys.P:
 				if (game.director.currentSceneName === "MainMenu") {
-					game.director.goToScene("Mining");
+					game.director.goToScene(oldScene);
 				} else {
+					oldScene = game.director.currentSceneName;
 					game.director.goToScene("MainMenu");
 				}
+
 				break;
 			case Keys.O:
 				game.director.goToScene("OreStation");
