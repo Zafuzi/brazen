@@ -33,6 +33,7 @@ export class Player extends Actor {
 	private thrustSound: Sound = Sounds.ThrustSound;
 	private miningSound: Sound = Sounds.MiningSound;
 	private hitSound: Sound = Sounds.HitAsteroid;
+	public inventory: Map<string, number> = new Map();
 
 	private currentCollisions = new Set<Entity>();
 
@@ -168,6 +169,12 @@ export class Player extends Actor {
 				this.beamLine.destSize.height = dist;
 
 				this.selectedItem.mine(this.miningRate);
+
+				const ore = this.selectedItem?.ore;
+				if (ore) {
+					this.inventory.set(ore, (this.inventory.get(ore) ?? 0) + this.miningRate);
+				}
+
 				this.miningSound.volume = 0.5;
 				this.beamLine.opacity = 1;
 			} else {

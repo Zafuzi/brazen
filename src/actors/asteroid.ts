@@ -16,7 +16,20 @@ import {
 } from "excalibur";
 import { Images, Sounds } from "../misc/resources";
 
-export const OreTypes = ["Iron", "Gold", "Silver"];
+export const OreTypes = [
+	"Iron",
+	"Gold",
+	"Silver",
+	"Water",
+	"Ice",
+	"Tin",
+	"Copper",
+	"Uranium",
+	"Blibonium",
+	"Flignum",
+	"Astrocloin",
+	"Everfermenth",
+];
 
 export class Asteroid extends Actor {
 	private sprite: Sprite;
