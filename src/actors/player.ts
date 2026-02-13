@@ -148,6 +148,8 @@ export class Player extends Actor {
 
 	private updateTick = 0;
 	onPostUpdate(engine: Engine, elapsed: number): void {
+		this.angularVelocity *= 0.98;
+
 		if (this.updateTick % 5 === 0) {
 			updatePlayer(this);
 		}
