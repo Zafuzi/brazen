@@ -1,4 +1,3 @@
-import ejs from "ejs";
 import { Actor, CollisionType, Color, Engine, Label, Rectangle, ScreenElement, vec } from "excalibur";
 import { Asteroid } from "../../actors/asteroid";
 import { Player } from "../../actors/player";
@@ -89,13 +88,9 @@ export class Radar extends ScreenElement {
 		name.text = selectedItem?.name ?? "";
 
 		if (selectedItem instanceof Asteroid) {
-			amount.text = ejs.render("Amount: <%= amount %>", {
-				amount: formatNumberFast((selectedItem as Asteroid)?.amount),
-			});
+			amount.text = "Amount: " + formatNumberFast((selectedItem as Asteroid)?.amount);
 
-			distance.text = ejs.render("Distance: <%= distance %>", {
-				distance: formatDistance(this.player.pos.distance(this.player.selectedItem?.pos)),
-			});
+			distance.text = "Distance: " + formatDistance(this.player.pos.distance(this.player.selectedItem?.pos));
 		}
 	}
 }
