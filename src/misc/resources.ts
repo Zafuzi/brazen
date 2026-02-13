@@ -32,6 +32,7 @@ export const Images = {
 export const Sounds = {
 	ThrustSound: new Sound("./sounds/thrust.wav"),
 	MiningSound: new Sound("./sounds/mining.wav"),
+	HitAsteroid: new Sound("./sounds/hit.wav"),
 };
 
 export const loader = new DefaultLoader();

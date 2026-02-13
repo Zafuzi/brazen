@@ -1,10 +1,13 @@
 import {
 	Actor,
 	CircleCollider,
+	Collider,
+	CollisionContact,
 	CollisionType,
 	Engine,
 	Entity,
 	Keys,
+	Side,
 	Sound,
 	Sprite,
 	toRadians,
@@ -29,6 +32,7 @@ export class Player extends Actor {
 	private selectHook: Function | undefined;
 	private thrustSound: Sound = Sounds.ThrustSound;
 	private miningSound: Sound = Sounds.MiningSound;
+	private hitSound: Sound = Sounds.HitAsteroid;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -89,6 +93,8 @@ export class Player extends Actor {
 		this.miningSound.loop = true;
 		this.miningSound.volume = 0;
 		this.miningSound.play();
+
+		this.hitSound.volume = 1;
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -184,6 +190,10 @@ export class Player extends Actor {
 		}
 
 		this.updateTick += Math.round(elapsed);
+	}
+
+	onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact): void {
+		this.hitSound.play();
 	}
 
 	thrustForwardStart = () => {
