@@ -12,7 +12,7 @@ const game = new Engine({
 	enableCanvasContextMenu: false,
 	backgroundColor: Color.Transparent,
 	scenes: {
-		start: Mining,
+		start: MainMenu,
 	},
 	physics: {
 		solver: SolverStrategy.Arcade,
