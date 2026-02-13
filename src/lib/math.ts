@@ -10,6 +10,26 @@ export const formatDistance = (px: number): string => {
 	return `${km.toFixed(2)} km`;
 };
 
+export const formatVelocity = (pixelsPerSecond: number): string => {
+	const kmPerSecond = pixelsPerSecond / globals.PIXELS_PER_KM;
+
+	if (Math.abs(kmPerSecond) < 1) {
+		return `${(kmPerSecond * 1000).toFixed(0)} m/s`;
+	}
+
+	return `${kmPerSecond.toFixed(2)} km/s`;
+};
+
+export const formatAcceleration = (pixelsPerSecondSquared: number): string => {
+	const kmPerSecondSquared = pixelsPerSecondSquared / globals.PIXELS_PER_KM;
+
+	if (Math.abs(kmPerSecondSquared) < 1) {
+		return `${(kmPerSecondSquared * 1000).toFixed(0)} m/s^2`;
+	}
+
+	return `${kmPerSecondSquared.toFixed(2)} km/s^2`;
+};
+
 export function formatNumberFast(value: number, decimals = 0, abbreviate = false): string {
 	if (!Number.isFinite(value)) return "0";
 

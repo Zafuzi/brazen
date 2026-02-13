@@ -1,5 +1,6 @@
 import { Actor, CircleCollider, CollisionType, Engine, Entity, Keys, Sprite, toRadians, vec, Vector } from "excalibur";
 import { Resources } from "../misc/resources";
+import { updatePlayer } from "../ui/PlayerHud/PlayerHud";
 import { updateSelected } from "../ui/SelectedItem/SelectedItem";
 import { Asteroid } from "./asteroid";
 
@@ -49,7 +50,7 @@ export class Player extends Actor {
 			scale: vec(1, 1),
 		});
 
-		this.beamLine = Resources.Thrust_purple.toSprite({
+		this.beamLine = Resources.Thrust_red.toSprite({
 			destSize: {
 				width: 10,
 				height: this.miningRange,
@@ -61,10 +62,11 @@ export class Player extends Actor {
 
 	onInitialize(engine: Engine) {
 		this.graphics.add(Resources.Ship.toSprite());
-		this.thrust.graphics.add(Resources.Thrust_blue.toSprite());
+		this.thrust.graphics.add(Resources.Thrust_purple.toSprite());
 		engine.currentScene.world.add(this.miningBeam);
 
 		updateSelected(this.selectedItem, this);
+		updatePlayer(this);
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -80,6 +82,7 @@ export class Player extends Actor {
 
 		if (keys.indexOf(Keys.X) > -1) {
 			this.vel = this.vel.scale(0.98);
+			this.angularVelocity *= 0.98;
 		}
 
 		if (keys.indexOf(Keys.A) > -1) {
@@ -145,14 +148,16 @@ export class Player extends Actor {
 
 	private updateTick = 0;
 	onPostUpdate(engine: Engine, elapsed: number): void {
-		this.angularVelocity *= 0.98;
+		if (this.updateTick % 5 === 0) {
+			updatePlayer(this);
+		}
 
-		if (this.updateTick > 1_000) {
+		if (this.updateTick % 20 === 0) {
 			updateSelected(this.selectedItem, this);
 			this.updateTick = 0;
 		}
 
-		this.updateTick += elapsed;
+		this.updateTick += Math.round(elapsed);
 	}
 
 	thrustForwardStart = () => {
@@ -176,7 +181,6 @@ export class Player extends Actor {
 
 	thrustEnd = () => {
 		this.acc = Vector.Zero;
-		this.vel = this.vel.scale(0.99);
 		this.thrust.graphics.opacity = 0;
 	};
 
@@ -193,7 +197,7 @@ export class Player extends Actor {
 
 		const rotationSpeed = 2; // radians per second
 
-		this.rotation += diff * Math.min(1, (rotationSpeed * elapsed) / 1000);
+		this.angularVelocity = diff * Math.min(1, rotationSpeed * elapsed);
 	};
 
 	addSelectHook(fn: Function) {

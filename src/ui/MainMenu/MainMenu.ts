@@ -14,6 +14,7 @@ export class MainMenu extends Scene {
 		title.textContent = "Brazen";
 
 		this.ui.classList.add("panel", "MainMenu");
+		this.ui.classList.remove("hid");
 
 		const btnStart = document.createElement("button");
 		btnStart.className = "button button--start";
@@ -31,6 +32,7 @@ export class MainMenu extends Scene {
 		if (!this.ui) {
 			throw new Error("Failed to deactivate UI");
 		}
+		this.ui.classList.add("hid");
 		this.ui.classList.remove("MainMenu");
 		this.ui.innerHTML = "";
 	}

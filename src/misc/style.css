@@ -2,6 +2,9 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+
+	--primary: rgb(122, 98, 157, 0.8);
+	--bg: rgba(27, 22, 35, 0.8);
 }
 
 body,
@@ -30,8 +33,13 @@ html {
 }
 
 .panel {
-	background-color: rgba(10, 10, 10, 0.8);
-	border: 2px solid rgba(10, 10, 10, 0.8);
+	--sb-track-color: rgb(0, 0, 0, 0.1);
+	--sb-thumb-color: var(--primary);
+	--sb-border-color: var(--sb-track-color);
+	--sb-size: 16px;
+
+	background-color: var(--bg);
+	border: 5px solid var(--bg);
 	color: #fafafa;
 	backdrop-filter: blur(10px);
 
@@ -42,8 +50,28 @@ html {
 	pointer-events: all;
 }
 
+.panel::-webkit-scrollbar {
+	width: var(--sb-size);
+}
+
+.panel::-webkit-scrollbar-track {
+	background: var(--sb-track-color);
+	backdrop-filter: blur(10px);
+}
+
+.panel::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	background: var(--sb-thumb-color);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	.panel {
+		scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+	}
+}
+
 button {
-	background-color: rgba(132, 12, 12, 0.769);
+	background-color: var(--primary);
 	border: 2px solid rgba(10, 10, 10, 0.8);
 	color: #fafafa;
 	font-weight: bold;

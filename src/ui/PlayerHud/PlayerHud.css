@@ -1,0 +1,47 @@
+.player {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	max-width: 300px;
+	width: 100%;
+
+	overflow: auto;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-flow: column;
+	gap: 8px;
+	padding: 8px;
+
+	align-self: start;
+
+	h3 {
+		font-size: 2rem;
+	}
+
+	.player_motion {
+		display: flex;
+		align-items: center;
+		justify-content: start;
+		text-align: center;
+		flex-direction: column;
+		gap: 8px;
+
+		.player_motion_row {
+			display: flex;
+			flex-flow: column;
+			align-items: center;
+			justify-content: space-between;
+			gap: 4px;
+
+			span {
+				display: inline-block;
+				background: var(--primary);
+				padding: 4px;
+				margin: 4px;
+				font-size: 1.5rem;
+			}
+		}
+	}
+}

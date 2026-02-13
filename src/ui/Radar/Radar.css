@@ -1,4 +1,8 @@
 .radar {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+
 	max-height: 300px;
 	min-width: 300px;
 
@@ -11,25 +15,22 @@
 	gap: 8px;
 
 	align-self: end;
-
-	background-color: rgba(79, 78, 78, 0.8);
-	border: 2px solid rgba(10, 10, 10, 0.8);
-
-	border-radius: 5px;
-	backdrop-filter: blur(10px);
+	padding-right: 8px;
 
 	.radarItem {
 		width: 100%;
 
-		display: flex;
+		display: grid;
 		align-items: center;
 
-		justify-content: space-between;
+		grid-template-columns: 1fr 1fr;
+
 		padding: 8px;
 		cursor: pointer;
+		border-radius: 8px;
 
 		&.active {
-			background-color: blue;
+			background-color: var(--primary);
 		}
 
 		&:hover {
