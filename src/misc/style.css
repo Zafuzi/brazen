@@ -25,6 +25,10 @@ html {
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.ui {
+	z-index: 999;
+}
+
 .panel {
 	background-color: rgba(10, 10, 10, 0.8);
 	border: 2px solid rgba(10, 10, 10, 0.8);
