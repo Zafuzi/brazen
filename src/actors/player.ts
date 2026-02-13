@@ -28,6 +28,7 @@ export class Player extends Actor {
 	private autoPilotEnabled: boolean = false;
 	private selectHook: Function | undefined;
 	private thrustSound: Sound = Sounds.ThrustSound;
+	private miningSound: Sound = Sounds.MiningSound;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -84,6 +85,10 @@ export class Player extends Actor {
 		this.thrustSound.loop = true;
 		this.thrustSound.volume = 0;
 		this.thrustSound.play();
+
+		this.miningSound.loop = true;
+		this.miningSound.volume = 0;
+		this.miningSound.play();
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -154,11 +159,13 @@ export class Player extends Actor {
 				this.beamLine.destSize.height = dist;
 
 				this.selectedItem.mine(this.miningRate);
+				this.miningSound.volume = 0.5;
 				this.beamLine.opacity = 1;
 			} else {
 				this.beamLine.opacity = 0;
 			}
 		} else {
+			this.miningSound.volume = 0;
 			this.beamLine.opacity = 0;
 		}
 	}

@@ -31,6 +31,7 @@ export const Images = {
 
 export const Sounds = {
 	ThrustSound: new Sound("./sounds/thrust.wav"),
+	MiningSound: new Sound("./sounds/mining.wav"),
 };
 
 export const loader = new DefaultLoader();
