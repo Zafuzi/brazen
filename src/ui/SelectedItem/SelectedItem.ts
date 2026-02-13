@@ -3,7 +3,7 @@ import { Asteroid } from "../../actors/asteroid";
 import { Player } from "../../actors/player";
 import { formatDistance, formatNumberFast } from "../../lib/math";
 import { rplc8 } from "../../lib/rplc8";
-import "./selectedItem.css";
+import "./SelectedItem.css";
 
 let selected = rplc8(".selectedItem", {});
 document.addEventListener("DOMContentLoaded", () => {
