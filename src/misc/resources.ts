@@ -1,4 +1,4 @@
-import { DefaultLoader, ImageSource } from "excalibur";
+import { DefaultLoader, ImageSource, Sound } from "excalibur";
 
 export const Resources = {
 	Background: new ImageSource("./milky-way.jpg"),
@@ -9,6 +9,8 @@ export const Resources = {
 	Thrust_yellow: new ImageSource("./effects/thrust_yellow.png"),
 	Thrust_red: new ImageSource("./effects/thrust_red.png"),
 	Thrust_blue: new ImageSource("./effects/thrust_blue.png"),
+
+	ThrustSound: new Sound("./sounds/thrust.wav"),
 
 	Station_00: new ImageSource("./stations/station_a.png"),
 	Station_01: new ImageSource("./stations/station_b.png"),

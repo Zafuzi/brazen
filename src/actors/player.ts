@@ -1,4 +1,16 @@
-import { Actor, CircleCollider, CollisionType, Engine, Entity, Keys, Sprite, toRadians, vec, Vector } from "excalibur";
+import {
+	Actor,
+	CircleCollider,
+	CollisionType,
+	Engine,
+	Entity,
+	Keys,
+	Sound,
+	Sprite,
+	toRadians,
+	vec,
+	Vector,
+} from "excalibur";
 import { Resources } from "../misc/resources";
 import { updatePlayer } from "../ui/PlayerHud/PlayerHud";
 import { updateSelected } from "../ui/SelectedItem/SelectedItem";
@@ -15,6 +27,7 @@ export class Player extends Actor {
 	public selectedItem: Actor | undefined;
 	private autoPilotEnabled: boolean = false;
 	private selectHook: Function | undefined;
+	private thrustSound: Sound = Resources.ThrustSound;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -67,6 +80,10 @@ export class Player extends Actor {
 
 		updateSelected(this.selectedItem, this);
 		updatePlayer(this);
+
+		this.thrustSound.loop = true;
+		this.thrustSound.volume = 0;
+		this.thrustSound.play();
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -165,6 +182,7 @@ export class Player extends Actor {
 	thrustForwardStart = () => {
 		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
 		this.thrust.graphics.opacity = 1;
+		this.thrustSound.volume = 0.5;
 	};
 
 	thrustReverseStart = () => {
@@ -184,6 +202,7 @@ export class Player extends Actor {
 	thrustEnd = () => {
 		this.acc = Vector.Zero;
 		this.thrust.graphics.opacity = 0;
+		this.thrustSound.volume = 0;
 	};
 
 	rotateTo = (target: Actor, elapsed: number) => {
