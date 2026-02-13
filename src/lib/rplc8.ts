@@ -75,13 +75,13 @@ export const rplc8 = function (elem: string | Element, data: any, cb?: Function)
 			return;
 		}
 
-		let coll = document.querySelectorAll(elem);
-		if (coll.length !== 1) {
-			console.error("rplc8: selector doesn't match exactly 1 element");
+		const selector = elem.toString();
+		elem = document.querySelectorAll(selector)[0];
+
+		if (!elem) {
+			console.error("rplc8: element not found", selector);
 			return;
 		}
-
-		elem = coll[0];
 	}
 
 	let mom = elem.parentNode; // Almost certainly not null.

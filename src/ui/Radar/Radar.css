@@ -1,0 +1,39 @@
+.radar {
+	max-height: 300px;
+	min-width: 300px;
+
+	overflow: auto;
+
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	flex-flow: column;
+	gap: 8px;
+
+	align-self: end;
+
+	background-color: rgba(79, 78, 78, 0.8);
+	border: 2px solid rgba(10, 10, 10, 0.8);
+
+	border-radius: 5px;
+	backdrop-filter: blur(10px);
+
+	.radarItem {
+		width: 100%;
+
+		display: flex;
+		align-items: center;
+
+		justify-content: space-between;
+		padding: 8px;
+		cursor: pointer;
+
+		&.active {
+			background-color: blue;
+		}
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+}

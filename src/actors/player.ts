@@ -1,6 +1,6 @@
 import { Actor, CircleCollider, CollisionType, Engine, Entity, Keys, Sprite, toRadians, vec, Vector } from "excalibur";
 import { Resources } from "../misc/resources";
-import { updateSelected } from "../ui/SelectedItem/selectedItem";
+import { updateSelected } from "../ui/SelectedItem/SelectedItem";
 import { Asteroid } from "./asteroid";
 
 export class Player extends Actor {
@@ -13,6 +13,7 @@ export class Player extends Actor {
 	private miningRate: number = 0.25;
 	public selectedItem: Actor | undefined;
 	private autoPilotEnabled: boolean = false;
+	private selectHook: Function | undefined;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -62,6 +63,8 @@ export class Player extends Actor {
 		this.graphics.add(Resources.Ship.toSprite());
 		this.thrust.graphics.add(Resources.Thrust_blue.toSprite());
 		engine.currentScene.world.add(this.miningBeam);
+
+		updateSelected(this.selectedItem, this);
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -140,9 +143,16 @@ export class Player extends Actor {
 		}
 	}
 
+	private updateTick = 0;
 	onPostUpdate(engine: Engine, elapsed: number): void {
 		this.angularVelocity *= 0.98;
-		updateSelected(this.selectedItem, this);
+
+		if (this.updateTick > 1_000) {
+			updateSelected(this.selectedItem, this);
+			this.updateTick = 0;
+		}
+
+		this.updateTick += elapsed;
 	}
 
 	thrustForwardStart = () => {
@@ -186,12 +196,24 @@ export class Player extends Actor {
 		this.rotation += diff * Math.min(1, (rotationSpeed * elapsed) / 1000);
 	};
 
+	addSelectHook(fn: Function) {
+		this.selectHook = fn;
+	}
+
 	selectItem = (target: Actor) => {
 		this.selectedItem = target;
 		this.autoPilotEnabled = true;
+		updateSelected(this.selectedItem, this);
+		if (this.selectHook) {
+			this.selectHook();
+		}
 	};
 
 	deselectItem = () => {
 		this.selectedItem = undefined;
+		updateSelected(this.selectedItem, this);
+		if (this.selectHook) {
+			this.selectHook();
+		}
 	};
 }

@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 export function updateSelected(actor: Actor | undefined, player: Player) {
 	if (selected) {
+		selected.elem.classList.remove("hid");
+
 		const data = {
 			title: "",
 			amount: "",
@@ -28,7 +30,7 @@ export function updateSelected(actor: Actor | undefined, player: Player) {
 		}
 
 		selected.update(data);
-		selected.elem.classList.remove("hid");
+
 		return;
 	}
 }

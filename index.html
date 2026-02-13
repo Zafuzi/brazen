@@ -12,18 +12,26 @@
 			<canvas id="game"></canvas>
 			<div class="hid" id="ui"></div>
 
-			<div class="panel selectedItem hid">
-				<img src="__img__" />
+			<div class="mining">
+				<div class="panel selectedItem hid">
+					<h3>__title__</h3>
 
-				<h3>__title__</h3>
+					<div>
+						<p>__amount__</p>
+						<p>__distance__</p>
+					</div>
+				</div>
 
-				<div>
-					<p>__amount__</p>
-					<p>__distance__</p>
+				<div class="panel radar hid">
+					<div class="radarItem __active__">
+						<h4>__title__</h4>
+						<div>
+							<p>__amount__</p>
+							<p>__distance__</p>
+						</div>
+					</div>
 				</div>
 			</div>
-
-			<div class="panel radar hid"></div>
 		</div>
 		<script type="module" src="./src/main.ts"></script>
 	</body>
