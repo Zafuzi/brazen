@@ -10,10 +10,11 @@ import {
 	randomInRange,
 	randomIntInRange,
 	Scene,
+	Sound,
 	Sprite,
 	vec,
 } from "excalibur";
-import { Images } from "../misc/resources";
+import { Images, Sounds } from "../misc/resources";
 
 export const OreTypes = ["Iron", "Gold", "Silver"];
 
@@ -22,6 +23,7 @@ export class Asteroid extends Actor {
 	public ore: string;
 	private startAmount: number = 100;
 	public amount: number = 100;
+	private explosionSound: Sound = Sounds.Explosion;
 
 	constructor(options?: { variation?: number } & ActorArgs) {
 		const range = 10;
@@ -83,6 +85,7 @@ export class Asteroid extends Actor {
 		});
 
 		scene.world.add(emitter);
+		this.explosionSound.play();
 		setTimeout(() => {
 			emitter.isEmitting = false;
 		}, 1_000);
