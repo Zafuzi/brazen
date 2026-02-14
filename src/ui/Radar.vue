@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import type { Engine } from "excalibur";
+import { vec, type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
-import { formatDistance, formatNumberFast } from "../../lib/math";
-import { Mining } from "../../levels/mining";
+import { formatDistance, formatNumberFast } from "../lib/math";
+import { Mining } from "../levels/mining";
+import type { Station } from "../actors/station";
 
 const props = defineProps<{ engine: Engine }>();
 
@@ -15,6 +16,13 @@ type RadarAsteroid = {
 };
 
 const asteroids = ref<RadarAsteroid[]>([]);
+const station = ref<Partial<Station> & { id: number, distance: string }>({
+	id: 0,
+	name: "Station",
+	pos: vec(0, 0),
+	distance: "0",
+});
+
 const isMiningActive = ref(false);
 const MAX_ITEMS = 40;
 const isActive = (asteroidId: number, playerSelectedId: number | undefined) => {
@@ -49,6 +57,13 @@ const syncRadar = () => {
 				active: isActive(asteroid.id, player.selectedItem?.id),
 			};
 		});
+
+	station.value = {
+		id: scene.station.id,
+		name: scene.station.name,
+		pos: scene.station.pos,
+		distance: formatDistance(scene.station.pos.distance(playerPos)),
+	}
 };
 
 const updateSubscription = props.engine.on("postupdate", syncRadar);
@@ -58,7 +73,14 @@ onBeforeUnmount(() => {
 	updateSubscription.close();
 });
 
-function clickItem(asteroidId: number) {
+function clickStation() {
+	props.engine.emit(
+		"selectedItem",
+		(props.engine.currentScene as Mining).station
+	);
+}
+
+function clickAsteroid(asteroidId: number) {
 	props.engine.emit(
 		"selectedItem",
 		(props.engine.currentScene as Mining).asteroids.find((a) => a.id === asteroidId),
@@ -68,12 +90,18 @@ function clickItem(asteroidId: number) {
 
 <template>
 	<div v-if="isMiningActive" class="panel radar">
-		<div
-			@click="clickItem(asteroid.id)"
-			v-for="asteroid in asteroids"
-			:key="asteroid.id"
-			:class="{ radarItem: true, active: asteroid.active }"
-		>
+		<div @click="clickStation" :class="{ radarItem: true, active: station.active }">
+			<h3>{{ station.name }}</h3>
+
+			<div>
+				<p>
+					<strong>{{ station.distance }}</strong>
+				</p>
+			</div>
+		</div>
+
+		<div @click="clickAsteroid(asteroid.id)" v-for="asteroid in asteroids" :key="asteroid.id"
+			:class="{ radarItem: true, active: asteroid.active }">
 			<h3>{{ asteroid.ore }}</h3>
 
 			<div>
@@ -92,7 +120,7 @@ function clickItem(asteroidId: number) {
 <style scoped lang="less">
 .radar {
 	position: absolute;
-	bottom: 20px;
+	bottom: 100px;
 	right: 20px;
 
 	max-height: 300px;

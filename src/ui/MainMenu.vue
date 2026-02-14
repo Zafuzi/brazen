@@ -14,10 +14,10 @@ function startGame() {
 <style scoped lang="less">
 #MainMenu {
 	position: absolute;
-	top: 20px;
-	left: 20px;
-	bottom: 20px;
-	right: 20px;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 
 	display: flex;
 	flex-direction: column;

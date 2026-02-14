@@ -11,11 +11,12 @@ import {
 	SolverStrategy,
 	type DirectorNavigationEvent,
 } from "excalibur";
-import { onBeforeUnmount, onDeactivated, onMounted, ref } from "vue";
+import { onBeforeUnmount, onDeactivated, ref } from "vue";
 import { Mining } from "./levels/mining";
 import { loader } from "./misc/resources";
-import MainMenu from "./ui/MainMenu/MainMenu.vue";
-import Radar from "./ui/Radar/Radar.vue";
+import MainMenu from "./ui/MainMenu.vue";
+import Radar from "./ui/Radar.vue";
+import PlayerHud from "./ui/PlayerHud.vue";
 
 const hidden = ref(true);
 const scene = ref("start");
@@ -96,6 +97,7 @@ onDeactivated(() => {
 		<img id="root_bg" src="/milky-way.jpg" />
 		<MainMenu v-if="scene === 'start'" :engine="engine" />
 		<Radar v-if="scene === 'Mining'" :engine="engine" />
+		<PlayerHud v-if="scene === 'Mining'" :engine="engine" />
 	</div>
 </template>
 
