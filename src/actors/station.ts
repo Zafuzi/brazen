@@ -1,6 +1,6 @@
 import { Actor, CollisionType, CompositeCollider, Engine, Shape, toRadians, vec } from "excalibur";
 import { Images } from "../misc/resources";
-import { OreType, OreTypes } from "./asteroid";
+import { OreTypes, type OreType } from "./asteroid";
 
 export type OrePrice = {
 	key: OreType;

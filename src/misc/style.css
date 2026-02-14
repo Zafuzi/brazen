@@ -28,10 +28,6 @@ html {
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#ui {
-	z-index: 999;
-}
-
 .panel {
 	--sb-track-color: rgb(0, 0, 0, 0.1);
 	--sb-thumb-color: var(--primary);
@@ -48,7 +44,7 @@ html {
 
 	border-radius: 5px;
 	pointer-events: all;
-	z-index: 1;
+	z-index: 999;
 }
 
 .panel::-webkit-scrollbar {
@@ -126,6 +122,6 @@ button {
 
 .hid {
 	display: none;
-	visibility: none;
+	visibility: hidden;
 	opacity: 0;
 }

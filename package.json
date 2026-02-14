@@ -22,14 +22,20 @@
 	"bugs": {},
 	"homepage": "",
 	"dependencies": {
+		"@vitejs/plugin-vue": "^6.0.4",
 		"excalibur": "0.32.0",
+		"html2canvas": "^1.4.1",
 		"less": "^4.5.1",
-		"rplc8": "^1.1.0"
+		"rplc8": "^1.1.0",
+		"vue": "^3.5.28"
 	},
 	"devDependencies": {
 		"@types/node": "^22.10.2",
+		"@types/vue": "^1.0.31",
+		"@vue/tsconfig": "^0.8.1",
 		"prettier": "^3.8.1",
 		"prettier-plugin-organize-imports": "^4.3.0",
+		"prettier-plugin-vue": "^1.1.6",
 		"typescript": "5.9.3",
 		"vite": "6.4.1"
 	}

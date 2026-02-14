@@ -56,7 +56,7 @@ export function formatNumberFast(value: number, decimals = 0, abbreviate = false
 	const fixed = abs.toFixed(decimals);
 	const [intPart, decPart] = fixed.split(".");
 
-	const withCommas = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	const withCommas = intPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 	return decPart ? `${sign}${withCommas}.${decPart}${suffix}` : `${sign}${withCommas}${suffix}`;
 }

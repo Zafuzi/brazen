@@ -54,8 +54,8 @@ let inject = function (e: HTMLElement, data: any) {
 	} else {
 		for (let i = 0; i < attrs.length; i++) {
 			let attr = attrs[i];
-			let val = attr.value;
-			if (val) {
+			let val = attr?.value;
+			if (val && attr) {
 				if (typeof val === "string") {
 					if (val.match(/__/)) {
 						attr.value = substitute(val, data);
@@ -67,7 +67,9 @@ let inject = function (e: HTMLElement, data: any) {
 };
 
 // The main function
-export const rplc8 = function (elem: string | Element, data: any, cb?: Function) {
+export const rplc8 = function (selector: string | Element, data: any, cb?: Function) {
+	let elem: Element | undefined;
+
 	// If elem isn't a DOM element, then it has to be query selector string
 	if (!(elem instanceof HTMLElement)) {
 		if (typeof elem !== "string") {
@@ -75,8 +77,7 @@ export const rplc8 = function (elem: string | Element, data: any, cb?: Function)
 			return;
 		}
 
-		const selector = elem.toString();
-		elem = document.querySelectorAll(selector)[0];
+		elem = document.querySelectorAll(selector as string)[0];
 
 		if (!elem) {
 			console.error("rplc8: element not found", selector);

@@ -15,8 +15,6 @@ import {
 	Vector,
 } from "excalibur";
 import { Images, Sounds } from "../misc/resources";
-import { updatePlayer } from "../ui/PlayerHud/PlayerHud";
-import { updateSelected } from "../ui/SelectedItem/SelectedItem";
 import { Asteroid } from "./asteroid";
 
 export class Player extends Actor {
@@ -29,7 +27,6 @@ export class Player extends Actor {
 	private miningRate: number = 0.25;
 	public selectedItem: Actor | undefined;
 	private autoPilotEnabled: boolean = false;
-	private selectHook: Function | undefined;
 	private thrustSound: Sound = Sounds.ThrustSound;
 	private miningSound: Sound = Sounds.MiningSound;
 	private hitSound: Sound = Sounds.HitAsteroid;
@@ -84,9 +81,6 @@ export class Player extends Actor {
 		this.thrust.graphics.add(Images.Thrust_blue.toSprite());
 		engine.currentScene.world.add(this.miningBeam);
 
-		updateSelected(this.selectedItem, this);
-		updatePlayer(this);
-
 		this.thrustSound.loop = true;
 		this.thrustSound.volume = 0;
 		this.thrustSound.play();
@@ -96,6 +90,9 @@ export class Player extends Actor {
 		this.miningSound.play();
 
 		this.hitSound.volume = 1;
+
+		//@ts-ignore
+		engine.events.on("selectedItem", this.selectItem);
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -190,13 +187,6 @@ export class Player extends Actor {
 	private updateTick = 0;
 	onPostUpdate(engine: Engine, elapsed: number): void {
 		this.angularVelocity *= 0.98;
-
-		if (this.updateTick % 5 === 0) {
-			updatePlayer(this);
-			updateSelected(this.selectedItem, this);
-			this.updateTick = 0;
-		}
-
 		this.updateTick += Math.round(elapsed);
 	}
 
@@ -253,24 +243,12 @@ export class Player extends Actor {
 		this.angularVelocity = diff * Math.min(1, rotationSpeed * elapsed);
 	};
 
-	addSelectHook(fn: Function) {
-		this.selectHook = fn;
-	}
-
 	selectItem = (target: Actor) => {
 		this.selectedItem = target;
 		this.autoPilotEnabled = true;
-		updateSelected(this.selectedItem, this);
-		if (this.selectHook) {
-			this.selectHook();
-		}
 	};
 
 	deselectItem = () => {
 		this.selectedItem = undefined;
-		updateSelected(this.selectedItem, this);
-		if (this.selectHook) {
-			this.selectHook();
-		}
 	};
 }

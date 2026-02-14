@@ -8,67 +8,7 @@
 		<title>Brazen</title>
 	</head>
 	<body>
-		<div id="root">
-			<div id="ui"></div>
-
-			<canvas id="game"></canvas>
-
-			<div class="mining">
-				<div class="player">
-					<div class="panel player_inventory">
-						<h3>Inventory</h3>
-
-						<div class="player_inventory_container">
-							<div class="player_inventory_item">
-								<strong>__ore__</strong>
-								<div><span>__amount__</span></div>
-							</div>
-						</div>
-					</div>
-
-					<div class="panel player_motion">
-						<div class="player_motion_row">
-							<strong>Velocity</strong>
-							<div><span>__velx__</span><span>__vely__</span></div>
-						</div>
-						<div class="player_motion_row">
-							<strong>Acceleration</strong>
-							<div><span>__accx__</span> <span>__accy__</span></div>
-						</div>
-						<div class="player_motion_row">
-							<strong>Angular Velocity</strong>
-							<div><span>__angular__</span></div>
-						</div>
-					</div>
-				</div>
-
-				<div class="panel selectedItem hid">
-					<h3>__title__</h3>
-
-					<div>
-						<p>__amount__</p>
-						<p>__distance__</p>
-					</div>
-				</div>
-
-				<div class="panel radar hid">
-					<div class="radarItem __active__">
-						<h4>__title__</h4>
-						<div>
-							<p>__amount__</p>
-							<p>__distance__</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="panel tutorial hid">
-					<h3>Controls</h3>
-					<p><strong>Shift / X:</strong> Hold to slow down</p>
-					<p><strong>WASD / Arrow Keys:</strong> Movement</p>
-					<p><strong>Click:</strong> Select Asteroids to Mine</p>
-				</div>
-			</div>
-		</div>
+		<div id="app"></div>
 		<script type="module" src="./src/main.ts"></script>
 	</body>
 </html>

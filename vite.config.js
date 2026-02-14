@@ -1,3 +1,4 @@
+import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 
 const tiledPlugin = () => {
@@ -15,7 +16,7 @@ const tiledPlugin = () => {
 
 export default defineConfig({
 	base: "./",
-	plugins: [tiledPlugin()],
+	plugins: [tiledPlugin(), vue()],
 	optimizeDeps: {
 		exclude: ["excalibur"],
 	},

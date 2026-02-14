@@ -1,6 +1,5 @@
 import {
 	Actor,
-	ActorArgs,
 	CircleCollider,
 	CollisionType,
 	Color,
@@ -158,7 +157,7 @@ export class Asteroid extends Actor {
 	public amount: number = 100;
 	private explosionSound: Sound = Sounds.Explosion;
 
-	constructor(options?: { variation?: number } & ActorArgs) {
+	constructor(options?: { variation?: number }) {
 		const range = 10;
 		super({
 			name: "Asteroid",
@@ -175,7 +174,7 @@ export class Asteroid extends Actor {
 		const image = `Asteroid_0${options?.variation ?? randomIntInRange(0, 7)}`;
 		this.sprite = Images[image as keyof typeof Images]?.toSprite({});
 
-		this.ore = OreTypes[randomIntInRange(0, OreTypes.length - 1)];
+		this.ore = OreTypes[randomIntInRange(0, OreTypes.length - 1)] ?? "Iron";
 		this.startAmount = randomIntInRange(1_000, 10_000);
 		this.amount = this.startAmount;
 	}

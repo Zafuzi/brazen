@@ -35,11 +35,5 @@ export const Sounds = {
 };
 
 export const loader = new DefaultLoader();
-
-for (const res of Object.values(Images)) {
-	loader.addResource(res);
-}
-
-for (const res of Object.values(Sounds)) {
-	loader.addResource(res);
-}
+loader.addResources(Object.values(Images));
+loader.addResources(Object.values(Sounds));
