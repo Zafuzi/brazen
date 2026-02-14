@@ -16,7 +16,7 @@ type RadarAsteroid = {
 };
 
 const asteroids = ref<RadarAsteroid[]>([]);
-const station = ref<Partial<Station> & { id: number, distance: string }>({
+const station = ref<Partial<Station> & { id: number; distance: string }>({
 	id: 0,
 	name: "Station",
 	pos: vec(0, 0),
@@ -63,7 +63,7 @@ const syncRadar = () => {
 		name: scene.station.name,
 		pos: scene.station.pos,
 		distance: formatDistance(scene.station.pos.distance(playerPos)),
-	}
+	};
 };
 
 const updateSubscription = props.engine.on("postupdate", syncRadar);
@@ -74,10 +74,7 @@ onBeforeUnmount(() => {
 });
 
 function clickStation() {
-	props.engine.emit(
-		"selectedItem",
-		(props.engine.currentScene as Mining).station
-	);
+	props.engine.emit("selectedItem", (props.engine.currentScene as Mining).station);
 }
 
 function clickAsteroid(asteroidId: number) {
@@ -100,8 +97,12 @@ function clickAsteroid(asteroidId: number) {
 			</div>
 		</div>
 
-		<div @click="clickAsteroid(asteroid.id)" v-for="asteroid in asteroids" :key="asteroid.id"
-			:class="{ radarItem: true, active: asteroid.active }">
+		<div
+			@click="clickAsteroid(asteroid.id)"
+			v-for="asteroid in asteroids"
+			:key="asteroid.id"
+			:class="{ radarItem: true, active: asteroid.active }"
+		>
 			<h3>{{ asteroid.ore }}</h3>
 
 			<div>

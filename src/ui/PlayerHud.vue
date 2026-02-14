@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { vec, type Engine } from 'excalibur';
-import { Mining } from '../levels/mining';
-import { onBeforeUnmount, ref } from 'vue';
-import { formatAcceleration, formatNumberFast, formatVelocity } from '../lib/math';
+import { vec, type Engine } from "excalibur";
+import { Mining } from "../levels/mining";
+import { onBeforeUnmount, ref } from "vue";
+import { formatAcceleration, formatNumberFast, formatVelocity } from "../lib/math";
 
 const props = defineProps<{ engine: Engine }>();
 const isMiningActive = ref(false);
@@ -20,9 +20,9 @@ const syncPlayer = () => {
 	player.value = {
 		vel: pl.vel,
 		acc: pl.acc,
-		angularVelocity: pl.angularVelocity
-	}
-}
+		angularVelocity: pl.angularVelocity,
+	};
+};
 
 const updateSubscription = props.engine.on("postupdate", syncPlayer);
 syncPlayer();
@@ -35,9 +35,9 @@ onBeforeUnmount(() => {
 <template>
 	<div v-if="isMiningActive" class="panel player_motion">
 		<div class="player_motion_row">
-			<p>Velocity: </p>
+			<p>Velocity:</p>
 			<div class="player_motion_row_data">
-				<p>{{ formatNumberFast(player.vel.x) }} </p>
+				<p>{{ formatNumberFast(player.vel.x) }}</p>
 				<p>{{ formatNumberFast(player.vel.y) }}</p>
 			</div>
 		</div>
