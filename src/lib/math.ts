@@ -1,5 +1,15 @@
 import { globals } from "./globals";
 
+export const formatAmount = (units: number): string => {
+	const kilos = units / globals.UNITS_PER_KG;
+
+	if (kilos < 1) {
+		return `${(kilos * 1000).toFixed(0)} g`;
+	}
+
+	return `${kilos.toFixed(2)} kg`;
+};
+
 export const formatDistance = (px: number): string => {
 	const km = px / globals.PIXELS_PER_KM;
 

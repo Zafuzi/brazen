@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { vec, type Engine } from "excalibur";
-import { Mining } from "../levels/mining";
+import { type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
-import { formatAcceleration, formatNumberFast, formatVelocity } from "../lib/math";
+import { Mining } from "../levels/mining";
+import { formatNumberFast } from "../lib/math";
 
 const props = defineProps<{ engine: Engine }>();
 const isMiningActive = ref(false);
@@ -60,46 +60,6 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="less">
-.player_inventory {
-	position: absolute;
-	bottom: 20px;
-	left: 20px;
-	max-width: 300px;
-	height: 300px;
-	width: 100%;
-	padding: 8px;
-
-	.player_inventory_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-		align-items: start;
-		justify-content: start;
-		text-align: center;
-		flex-flow: column;
-		height: calc(100% - 32px);
-		width: 100%;
-
-		overflow-y: auto;
-		overflow-x: hidden;
-
-		gap: 8px;
-	}
-
-	h3 {
-		grid-column: 1/-1;
-		margin-bottom: 8px;
-	}
-
-	.player_inventory_item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 8px;
-		background-color: var(--primary);
-	}
-}
-
 .player_motion {
 	position: absolute;
 	bottom: 0;

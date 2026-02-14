@@ -120,6 +120,10 @@ button {
 	}
 }
 
+.flex-fill {
+	flex-basis: 100%;
+}
+
 .grid-fill {
 	grid-column: 1/-1;
 }

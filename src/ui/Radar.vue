@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { vec, type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
-import { formatDistance, formatNumberFast } from "../lib/math";
+import { formatAmount, formatDistance } from "../lib/math";
 import { Mining } from "../levels/mining";
 import type { Station } from "../actors/station";
 
@@ -52,7 +52,7 @@ const syncRadar = () => {
 			return {
 				id: asteroid.id,
 				ore: asteroid.ore,
-				amount: formatNumberFast(asteroid.amount),
+				amount: formatAmount(asteroid.amount),
 				distance: formatDistance(distance),
 				active: isActive(asteroid.id, player.selectedItem?.id),
 			};

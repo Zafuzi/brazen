@@ -17,6 +17,8 @@ import { loader } from "./misc/resources";
 import MainMenu from "./ui/MainMenu.vue";
 import Radar from "./ui/Radar.vue";
 import PlayerHud from "./ui/PlayerHud.vue";
+import SelectedItem from "./ui/SelectedItem.vue";
+import Inventory from "./ui/Inventory.vue";
 
 const hidden = ref(true);
 const scene = ref("start");
@@ -98,6 +100,8 @@ onDeactivated(() => {
 		<MainMenu v-if="scene === 'start'" :engine="engine" />
 		<Radar v-if="scene === 'Mining'" :engine="engine" />
 		<PlayerHud v-if="scene === 'Mining'" :engine="engine" />
+		<SelectedItem v-if="scene === 'Mining'" :engine="engine" />
+		<Inventory v-if="scene === 'Mining'" :engine="engine" />
 	</div>
 </template>
 
