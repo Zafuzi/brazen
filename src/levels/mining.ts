@@ -1,26 +1,31 @@
-import { Engine, Scene } from "excalibur";
+import { Engine, Scene, toRadians, vec } from "excalibur";
 import { Asteroid } from "../actors/asteroid";
 import { Player } from "../actors/player";
 import { Station } from "../actors/station";
 
 export class Mining extends Scene {
 	public player = new Player();
-	public station = new Station();
+
 	public asteroids: Asteroid[] = [];
+	public stations: Station[] = [
+		new Station({
+			name: "Home Station",
+		}),
+		new Station({
+			name: "Far Away Station",
+			pos: vec(1_000_000, 1_000_000),
+			angularVelocity: toRadians(-7),
+		}),
+	];
 
 	constructor() {
 		super();
-
-		this.station.events.on("pointerup", () => {
-			this.player.selectItem(this.station);
-		});
 
 		document.querySelector(".tutorial")?.classList.remove("hid");
 	}
 
 	override onInitialize(engine: Engine): void {
 		this.add(this.player);
-		this.add(this.station);
 
 		for (let i = 0; i < 1_000; i++) {
 			const asteroid = new Asteroid();
@@ -39,6 +44,13 @@ export class Mining extends Scene {
 			this.asteroids.push(asteroid);
 			this.add(asteroid);
 		}
+
+		this.stations.forEach((station) => {
+			station.events.on("pointerup", () => {
+				this.player.selectItem(station);
+			});
+			this.add(station);
+		});
 
 		engine.currentScene.camera.strategy.lockToActor(this.player);
 		engine.currentScene.camera.zoom = 1;

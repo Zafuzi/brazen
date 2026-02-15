@@ -1,4 +1,4 @@
-import { Actor, CollisionType, CompositeCollider, Engine, Shape, toRadians, vec } from "excalibur";
+import { Actor, CollisionType, CompositeCollider, Engine, Shape, toRadians, vec, type ActorArgs } from "excalibur";
 import { Images } from "../misc/resources";
 import { OreTypes, type OreType } from "./asteroid";
 
@@ -23,12 +23,13 @@ export const OrePrices: OrePrice[] = OreTypes.map((key, index) => {
 });
 
 export class Station extends Actor {
-	constructor() {
+	constructor(options?: ActorArgs) {
 		super({
 			name: "Station",
 			pos: vec(0, -400),
 			collisionType: CollisionType.Fixed,
 			angularVelocity: toRadians(2),
+			...options,
 		});
 	}
 

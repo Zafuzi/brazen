@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { Engine } from "excalibur";
-import { Asteroid } from "../actors/asteroid";
-import { formatAmount, formatDistance } from "../lib/math";
 import { onBeforeUnmount, ref } from "vue";
 import { Mining } from "../levels/mining";
+import { formatAmount } from "../lib/math";
 
 const props = defineProps<{ engine: Engine }>();
 const isMiningActive = ref(false);
@@ -25,6 +24,10 @@ const syncInventory = () => {
 			amount: item[1],
 		})
 	})
+
+	inventory.value = inventory.value.sort((a, b) => {
+		return b.amount - a.amount;
+	})
 };
 
 const updateSubscription = props.engine.on("postupdate", syncInventory);
@@ -37,10 +40,12 @@ onBeforeUnmount(() => {
 
 <template>
 	<div class="panel player_inventory">
-		<h3 class="flex-fill">Inventory</h3>
-		<div class="player_inventory_item" v-for="item in inventory" :key="item.name">
-			<p>{{ item.name }}</p>
-			<p>{{ formatAmount(item.amount) }}</p>
+		<h3>Inventory</h3>
+		<div class="panel player_inventory_container">
+			<div class="player_inventory_item" v-for="item in inventory" :key="item.name">
+				<p>{{ item.name }}</p>
+				<p>{{ formatAmount(item.amount) }}</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -55,18 +60,27 @@ onBeforeUnmount(() => {
 	height: 300px;
 
 	width: 100%;
-	padding: 8px;
 
 	display: flex;
-	flex-flow: row wrap;
-	overflow-y: auto;
-	overflow-x: hidden;
+	flex-flow: column;
 
 	gap: 8px;
 
+
 	h3 {
-		grid-column: 1/-1;
+		margin: 0 auto;
+		color: white;
 		margin-bottom: 8px;
+	}
+
+	.player_inventory_container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		gap: 8px;
+		padding-right: 8px;
 	}
 
 	.player_inventory_item {

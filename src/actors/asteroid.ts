@@ -161,7 +161,7 @@ export class Asteroid extends Actor {
 		const range = 10;
 		super({
 			name: "Asteroid",
-			collisionType: CollisionType.Active,
+			collisionType: CollisionType.Passive,
 			angularVelocity: randomInRange(-Math.PI, Math.PI),
 			vel: vec(randomInRange(-range, range), randomInRange(-range, range)),
 			pos: vec(
