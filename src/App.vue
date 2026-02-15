@@ -96,7 +96,6 @@ onDeactivated(() => {
 
 <template>
 	<div :class="{ hid: hidden }" id="root">
-		<img id="root_bg" src="/milky-way.jpg" />
 		<MainMenu v-if="scene === 'start'" :engine="engine" />
 		<Radar v-if="scene === 'Mining'" :engine="engine" />
 		<PlayerHud v-if="scene === 'Mining'" :engine="engine" />
@@ -114,7 +113,8 @@ onDeactivated(() => {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: transparent;
+	background: #080514;
+	background: radial-gradient(circle, rgba(8, 5, 20, 1) 0%, rgba(6, 1, 20, 1) 35%, rgba(0, 0, 0, 1) 100%);
 
 	#root_bg {
 		z-index: -1;
