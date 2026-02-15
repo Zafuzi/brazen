@@ -15,6 +15,7 @@ export class Mining extends Scene {
 			name: "Far Away Station",
 			pos: vec(1_000_000, 1_000_000),
 			angularVelocity: toRadians(-7),
+			visible: false,
 		}),
 	];
 
@@ -27,7 +28,7 @@ export class Mining extends Scene {
 	override onInitialize(engine: Engine): void {
 		this.add(this.player);
 
-		for (let i = 0; i < 1_000; i++) {
+		for (let i = 0; i < 3_000; i++) {
 			const asteroid = new Asteroid();
 
 			asteroid.events.on("pointerup", () => {
@@ -45,15 +46,16 @@ export class Mining extends Scene {
 			this.add(asteroid);
 		}
 
-		this.stations.forEach((station) => {
+		this.stations.forEach((station: Station) => {
 			station.events.on("pointerup", () => {
 				this.player.selectItem(station);
 			});
+
 			this.add(station);
 		});
 
 		engine.currentScene.camera.strategy.lockToActor(this.player);
-		engine.currentScene.camera.zoom = 1;
+		engine.currentScene.camera.zoom = 0.5;
 	}
 
 	onPostUpdate(engine: Engine, elapsed: number): void {}

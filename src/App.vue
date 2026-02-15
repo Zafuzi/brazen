@@ -11,7 +11,7 @@ import {
 	SolverStrategy,
 	type DirectorNavigationEvent,
 } from "excalibur";
-import { onBeforeUnmount, onDeactivated, ref } from "vue";
+import { onBeforeUnmount, onDeactivated, onUnmounted, ref } from "vue";
 import { Mining } from "./levels/mining";
 import { loader } from "./misc/resources";
 import MainMenu from "./ui/MainMenu.vue";
@@ -27,6 +27,7 @@ const engine = new Engine({
 	displayMode: DisplayMode.FillScreen,
 	pixelArt: false,
 	antialiasing: true,
+	pixelRatio: 1,
 	enableCanvasContextMenu: false,
 	backgroundColor: Color.Transparent,
 	scenes: {
@@ -40,8 +41,6 @@ const engine = new Engine({
 });
 
 engine.start("start", { loader }).then(() => {
-	// engine.add("OreStation", OreStation);
-	// engine.add("FuelDepot", FuelDepot);
 	engine.add("Mining", Mining);
 
 	let oldScene = engine.director.currentSceneName;
@@ -87,7 +86,7 @@ engine.start("start", { loader }).then(() => {
 
 onBeforeUnmount(() => {
 	engine.dispose();
-});
+})
 
 onDeactivated(() => {
 	engine.dispose();

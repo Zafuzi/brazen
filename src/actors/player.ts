@@ -19,17 +19,41 @@ import { Asteroid } from "./asteroid";
 
 export class Player extends Actor {
 	private size = 48;
-	private thrust: Actor;
-	private miningTarget: Asteroid | undefined;
-	private beamLine: Sprite;
-	private miningBeam: Actor;
-	private miningRange: number = 5_000;
+	private thrust: Actor = new Actor({
+		name: "PlayerThrust",
+		pos: vec(0, 64),
+		opacity: 0,
+		z: -1,
+		collisionType: CollisionType.PreventCollision,
+	});
+
 	private miningRate: number = 0.25;
+	private miningRange: number = 5_000;
+	private miningTarget: Asteroid | undefined;
+	private beamLine: Sprite = Images.Thrust_purple.toSprite({
+		destSize: {
+			width: 10,
+			height: this.miningRange,
+		},
+	});
+
+	private miningBeam: Actor = new Actor({
+		z: -1,
+		anchor: vec(0.5, 0),
+		rotation: toRadians(-90),
+		pos: vec(0, 0),
+		scale: vec(1, 1),
+	});
+
 	public selectedItem: Actor | undefined;
+
 	private autoPilotEnabled: boolean = false;
+
 	private thrustSound: Sound = Sounds.ThrustSound;
 	private miningSound: Sound = Sounds.MiningSound;
 	private hitSound: Sound = Sounds.HitAsteroid;
+	private movementLoopsStarted = false;
+
 	public inventory: Map<string, number> = new Map();
 
 	private currentCollisions = new Set<Entity>();
@@ -47,47 +71,21 @@ export class Player extends Actor {
 				radius: this.size - 10,
 			}),
 		);
-
-		this.thrust = new Actor({
-			name: "PlayerThrust",
-			pos: vec(0, 64),
-			opacity: 0,
-			z: -1,
-			collisionType: CollisionType.PreventCollision,
-		});
-
-		this.addChild(this.thrust);
-
-		this.miningBeam = new Actor({
-			z: -1,
-			anchor: vec(0.5, 0),
-			rotation: toRadians(-90),
-			pos: vec(0, 0),
-			scale: vec(1, 1),
-		});
-
-		this.beamLine = Images.Thrust_purple.toSprite({
-			destSize: {
-				width: 10,
-				height: this.miningRange,
-			},
-		});
-
-		this.miningBeam.graphics.add(this.beamLine);
 	}
 
 	onInitialize(engine: Engine) {
+		this.addChild(this.thrust);
 		this.graphics.add(Images.Ship.toSprite());
 		this.thrust.graphics.add(Images.Thrust_blue.toSprite());
+		this.miningBeam.graphics.add(this.beamLine);
+
 		engine.currentScene.world.add(this.miningBeam);
 
 		this.thrustSound.loop = true;
 		this.thrustSound.volume = 0;
-		this.thrustSound.play();
 
 		this.miningSound.loop = true;
 		this.miningSound.volume = 0;
-		this.miningSound.play();
 
 		this.hitSound.volume = 1;
 
@@ -96,6 +94,7 @@ export class Player extends Actor {
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
+		this.startMovementLoopsIfReady(engine);
 		const keys = engine.input.keyboard.getKeys();
 
 		if (keys.indexOf(Keys.W) === -1 && keys.indexOf(Keys.D) === -1) {
@@ -182,6 +181,16 @@ export class Player extends Actor {
 			this.miningSound.volume = 0;
 			this.beamLine.opacity = 0;
 		}
+	}
+
+	private startMovementLoopsIfReady(engine: Engine) {
+		if (this.movementLoopsStarted || !engine.isRunning()) {
+			return;
+		}
+
+		this.thrustSound.play();
+		this.miningSound.play();
+		this.movementLoopsStarted = true;
 	}
 
 	private updateTick = 0;

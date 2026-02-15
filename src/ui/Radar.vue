@@ -18,7 +18,8 @@ type RadarStation = {
 	id: number;
 	name: string;
 	distance: string,
-	active: boolean
+	active: boolean,
+	visible: boolean
 }
 
 const asteroids = ref<RadarAsteroid[]>([]);
@@ -74,6 +75,7 @@ const syncRadar = () => {
 				name: station.name,
 				distance: formatDistance(distance),
 				active: isActive(station.id, player.selectedItem?.id),
+				visible: !station.isOffScreen,
 			};
 		});
 };
@@ -109,6 +111,9 @@ function clickAsteroid(asteroidId: number) {
 				<h3>{{ station.name }}</h3>
 
 				<div class="radarItem_content">
+					<p>
+						<strong>{{ station.visible }}</strong>
+					</p>
 					<p>
 						<strong>{{ station.distance }}</strong>
 					</p>

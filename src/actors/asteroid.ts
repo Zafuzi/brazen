@@ -152,8 +152,8 @@ export type OreType = (typeof OreTypes)[number];
 
 export class Asteroid extends Actor {
 	private sprite: Sprite;
-	public ore: OreType;
-	private startAmount: number = 100;
+	public ore: OreType = OreTypes[randomIntInRange(0, OreTypes.length - 1)] ?? "Iron";
+	private startAmount: number = randomIntInRange(1_000, 10_000);
 	public amount: number = 100;
 	private explosionSound: Sound = Sounds.Explosion;
 
@@ -161,7 +161,7 @@ export class Asteroid extends Actor {
 		const range = 10;
 		super({
 			name: "Asteroid",
-			collisionType: CollisionType.Passive,
+			collisionType: CollisionType.Fixed,
 			angularVelocity: randomInRange(-Math.PI, Math.PI),
 			vel: vec(randomInRange(-range, range), randomInRange(-range, range)),
 			pos: vec(
@@ -173,13 +173,11 @@ export class Asteroid extends Actor {
 
 		const image = `Asteroid_0${options?.variation ?? randomIntInRange(0, 7)}`;
 		this.sprite = Images[image as keyof typeof Images]?.toSprite({});
-
-		this.ore = OreTypes[randomIntInRange(0, OreTypes.length - 1)] ?? "Iron";
-		this.startAmount = randomIntInRange(1_000, 10_000);
-		this.amount = this.startAmount;
 	}
 
 	onInitialize(engine: Engine): void {
+		this.amount = this.startAmount;
+
 		this.graphics.add(this.sprite);
 
 		this.collider.set(
