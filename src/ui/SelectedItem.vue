@@ -74,6 +74,7 @@ onBeforeUnmount(() => {
 
 	h3 {
 		font-size: 2rem;
+		text-align: center;
 	}
 
 	.selectedItem_amount {
