@@ -1,4 +1,4 @@
-import { Engine, Scene, toRadians, vec } from "excalibur";
+import { Engine, Scene } from "excalibur";
 import { Asteroid } from "../actors/asteroid";
 import { Player } from "../actors/player";
 import { Station } from "../actors/station";
@@ -9,13 +9,7 @@ export class Mining extends Scene {
 	public asteroids: Asteroid[] = [];
 	public stations: Station[] = [
 		new Station({
-			name: "Home Station",
-		}),
-		new Station({
-			name: "Far Away Station",
-			pos: vec(1_000_000, 1_000_000),
-			angularVelocity: toRadians(-7),
-			visible: false,
+			name: "Refinery",
 		}),
 	];
 
