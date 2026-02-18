@@ -78,6 +78,7 @@ engine.start("start", { loader }).then(() => {
 	});
 
 	engine.on("navigation", (scn: DirectorNavigationEvent) => {
+		hotSave();
 		scene.value = scn.destinationName;
 	});
 
@@ -85,12 +86,29 @@ engine.start("start", { loader }).then(() => {
 });
 
 onBeforeUnmount(() => {
-	engine.dispose();
-})
-
-onDeactivated(() => {
+	hotSave();
 	engine.dispose();
 });
+
+onDeactivated(() => {
+	hotSave();
+	engine.dispose();
+});
+
+window.addEventListener("beforeunload", (event) => {
+	event.preventDefault();
+	hotSave();
+});
+
+if (import.meta.hot) {
+	hotSave();
+}
+
+function hotSave() {
+	if (engine?.currentScene instanceof Mining) {
+		(engine.currentScene as Mining).autosave();
+	}
+}
 </script>
 
 <template>

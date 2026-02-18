@@ -1,7 +1,34 @@
+import type { PlayerInventoryEntry } from "../actors/player";
+
+export type SavedAsteroid = {
+	ore: string;
+	amount: number;
+	startAmount: number;
+	pos: { x: number; y: number };
+	vel: { x: number; y: number };
+	angularVelocity: number;
+	variation: number;
+};
+
 const defaults = {
 	options: {
 		volume: 50,
 	},
+	player: {
+		fuel: 100,
+		pos: {
+			x: 0,
+			y: 0,
+		},
+		vel: {
+			x: 0,
+			y: 0,
+		},
+		angularVelocity: 0,
+		inventory: [] as PlayerInventoryEntry[],
+	},
+	asteroids: [] as SavedAsteroid[],
+	stations: [] as any[],
 };
 
 type Defaults = typeof defaults;

@@ -12,12 +12,33 @@ export const formatAmount = (units: number): string => {
 
 export const formatDistance = (px: number): string => {
 	const km = px / globals.PIXELS_PER_KM;
+	const absKm = Math.abs(km);
 
-	if (km < 1) {
-		return `${(km * 1000).toFixed(0)} m`;
+	if (absKm < 1) {
+		return `${formatNumberFast(km * 1000)} m`;
 	}
 
-	return `${km.toFixed(2)} km`;
+	if (absKm < 1_000) {
+		return `${formatNumberFast(km)} km`;
+	}
+
+	if (absKm < 1_000_000) {
+		return `${formatNumberFast(km / 1_000)} Mm`;
+	}
+
+	if (absKm < 1_000_000_000) {
+		return `${formatNumberFast(km / 1_000_000)} Gm`;
+	}
+
+	if (absKm < 1_000_000_000_000) {
+		return `${formatNumberFast(km / 1_000_000_000)} Tm`;
+	}
+
+	if (absKm < 1_000_000_000_000_000) {
+		return `${formatNumberFast(km / 1_000_000_000_000)} Pm`;
+	}
+
+	return `${formatNumberFast(km / 1_000_000_000_000_000)} Em`;
 };
 
 export const formatVelocity = (pixelsPerSecond: number): string => {

@@ -1,6 +1,7 @@
 import {
 	Actor,
 	CircleCollider,
+	clamp,
 	Collider,
 	CollisionContact,
 	CollisionType,
@@ -14,8 +15,11 @@ import {
 	vec,
 	Vector,
 } from "excalibur";
+import { SaveSystem } from "../lib/save";
 import { Images, Sounds } from "../misc/resources";
 import { Asteroid } from "./asteroid";
+
+export type PlayerInventoryEntry = [string, number];
 
 export class Player extends Actor {
 	private size = 48;
@@ -55,6 +59,7 @@ export class Player extends Actor {
 	private movementLoopsStarted = false;
 
 	public inventory: Map<string, number> = new Map();
+	public fuel = 100;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -74,6 +79,18 @@ export class Player extends Actor {
 	}
 
 	onInitialize(engine: Engine) {
+		SaveSystem.getState("player").then((savedState) => {
+			this.pos = vec(savedState.pos.x, savedState.pos.y);
+			this.vel = vec(savedState.vel.x, savedState.vel.y);
+			this.angularVelocity = savedState.angularVelocity;
+			this.fuel = savedState.fuel;
+			this.inventory = new Map(savedState.inventory);
+
+			engine.currentScene.camera.pos = this.pos;
+			engine.currentScene.camera.strategy.lockToActor(this);
+			engine.currentScene.camera.zoom = 0.5;
+		});
+
 		this.addChild(this.thrust);
 		this.graphics.add(Images.Ship.toSprite());
 		this.thrust.graphics.add(Images.Thrust_blue.toSprite());
@@ -132,7 +149,7 @@ export class Player extends Actor {
 			}
 		}
 
-		if (!this.miningTarget?.isActive) {
+		if (this.miningTarget?.isKilled()) {
 			this.miningTarget = undefined;
 		}
 
@@ -141,7 +158,7 @@ export class Player extends Actor {
 		}
 
 		if (this.selectedItem) {
-			if (!this.selectedItem.isActive) {
+			if (this.selectedItem.isKilled()) {
 				this.deselectItem();
 				this.miningSound.volume = 0;
 			}
@@ -193,10 +210,26 @@ export class Player extends Actor {
 		this.movementLoopsStarted = true;
 	}
 
+	autosave() {
+		SaveSystem.setState("player", {
+			fuel: this.fuel,
+			pos: { x: this.pos.x, y: this.pos.y },
+			vel: { x: this.vel.x, y: this.vel.y },
+			angularVelocity: this.angularVelocity,
+			inventory: Array.from(this.inventory.entries()),
+		});
+	}
+
 	private updateTick = 0;
 	onPostUpdate(engine: Engine, elapsed: number): void {
 		this.angularVelocity *= 0.98;
 		this.updateTick += Math.round(elapsed);
+
+		if (this.updateTick > 1_000) {
+			this.updateTick = 0;
+		}
+
+		this.fuel = clamp(this.fuel, 0, 100);
 	}
 
 	onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact): void {
@@ -204,9 +237,12 @@ export class Player extends Actor {
 	}
 
 	thrustForwardStart = () => {
-		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
-		this.thrust.graphics.opacity = 1;
-		this.thrustSound.volume = 0.5;
+		if (this.fuel > 0) {
+			this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
+			this.thrust.graphics.opacity = 1;
+			this.thrustSound.volume = 0.5;
+			this.fuel -= 1 / 100;
+		}
 	};
 
 	thrustReverseStart = () => {

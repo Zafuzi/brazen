@@ -12,6 +12,7 @@ import {
 	Sound,
 	Sprite,
 	vec,
+	type ActorArgs,
 } from "excalibur";
 import { Images, Sounds } from "../misc/resources";
 
@@ -153,26 +154,37 @@ export type OreType = (typeof OreTypes)[number];
 export class Asteroid extends Actor {
 	private sprite: Sprite;
 	public ore: OreType = OreTypes[randomIntInRange(0, OreTypes.length - 1)] ?? "Iron";
-	private startAmount: number = randomIntInRange(1_000, 10_000);
+	public startAmount: number = randomIntInRange(1_000, 10_000);
 	public amount: number = 100;
+	public variation: number = 0;
 	private explosionSound: Sound = Sounds.Explosion;
 
-	constructor(options?: { variation?: number }) {
+	constructor(options?: { variation?: number; ore?: OreType; amount?: number; startAmount?: number } & ActorArgs) {
 		const range = 10;
 		super({
+			...options,
 			name: "Asteroid",
 			collisionType: CollisionType.Fixed,
-			angularVelocity: randomInRange(-Math.PI, Math.PI),
-			vel: vec(randomInRange(-range, range), randomInRange(-range, range)),
-			pos: vec(
-				randomIntInRange(0, 1) ? randomInRange(-50_000, -10_000) : randomInRange(10_000, 50_000),
-				randomInRange(-100_000, 100_000),
-			),
-			...options,
+			angularVelocity: options?.angularVelocity ?? randomInRange(-Math.PI, Math.PI),
+			vel: options?.vel ?? vec(randomInRange(-range, range), randomInRange(-range, range)),
+			pos:
+				options?.pos ??
+				vec(
+					randomIntInRange(0, 1) ? randomInRange(-50_000, -10_000) : randomInRange(10_000, 50_000),
+					randomInRange(-100_000, 100_000),
+				),
 		});
 
-		const image = `Asteroid_0${options?.variation ?? randomIntInRange(0, 7)}`;
+		this.startAmount = options?.startAmount ?? randomIntInRange(1_000, 10_000);
+		this.amount = options?.amount ?? this.startAmount;
+		this.variation = options?.variation ?? randomIntInRange(0, 7);
+
+		const image = `Asteroid_0${this.variation ?? randomIntInRange(0, 7)}`;
 		this.sprite = Images[image as keyof typeof Images]?.toSprite({});
+
+		if (options?.ore) {
+			this.ore = options?.ore as OreType;
+		}
 	}
 
 	onInitialize(engine: Engine): void {

@@ -2,7 +2,7 @@
 import { type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
 import { Mining } from "../levels/mining";
-import { formatNumberFast } from "../lib/math";
+import { formatAcceleration, formatDistance, formatNumberFast, formatVelocity } from "../lib/math";
 
 const props = defineProps<{ engine: Engine }>();
 const isMiningActive = ref(false);
@@ -20,6 +20,8 @@ const syncPlayer = () => {
 	player.value = {
 		vel: pl.vel,
 		acc: pl.acc,
+		pos: pl.pos,
+		fuel: pl.fuel,
 		angularVelocity: pl.angularVelocity,
 	};
 };
@@ -35,25 +37,40 @@ onBeforeUnmount(() => {
 <template>
 	<div v-if="isMiningActive" class="panel player_motion">
 		<div class="player_motion_row">
+			<p>Fuel:</p>
+			<div class="player_motion_row_data">
+				<p>{{ formatNumberFast(player.fuel) }}</p>
+			</div>
+		</div>
+
+		<div class="player_motion_row">
+			<p>Position:</p>
+			<div class="player_motion_row_data">
+				<p>{{ formatDistance(player.pos.x) }}</p>
+				<p>{{ formatDistance(player.pos.y) }}</p>
+			</div>
+		</div>
+
+		<div class="player_motion_row">
 			<p>Velocity:</p>
 			<div class="player_motion_row_data">
-				<p>{{ formatNumberFast(player.vel.x) }}</p>
-				<p>{{ formatNumberFast(player.vel.y) }}</p>
+				<p>{{ formatVelocity(player.vel.x) }}</p>
+				<p>{{ formatVelocity(player.vel.y) }}</p>
 			</div>
 		</div>
 
 		<div class="player_motion_row">
 			<p>Acceleration</p>
 			<div class="player_motion_row_data">
-				<p>{{ formatNumberFast(player.acc.x) }}</p>
-				<p>{{ formatNumberFast(player.acc.y) }}</p>
+				<p>{{ formatAcceleration(player.acc.x) }}</p>
+				<p>{{ formatAcceleration(player.acc.y) }}</p>
 			</div>
 		</div>
 
 		<div class="player_motion_row">
 			<p>Angular Velocity</p>
 			<div class="player_motion_row_data">
-				<p class="grid-fill">{{ formatNumberFast(player.angularVelocity) }}</p>
+				<p class="grid-fill">{{ formatVelocity(player.angularVelocity) }}</p>
 			</div>
 		</div>
 	</div>
@@ -69,8 +86,9 @@ onBeforeUnmount(() => {
 	height: 80px;
 
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 	align-items: center;
+	justify-content: center;
 	text-align: center;
 	flex-flow: row nowrap;
 

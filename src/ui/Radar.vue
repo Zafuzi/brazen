@@ -3,6 +3,8 @@ import { type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
 import { Mining } from "../levels/mining";
 import { formatAmount, formatDistance } from "../lib/math";
+import { Asteroid } from "../actors/asteroid";
+import { Station } from "../actors/station";
 
 const props = defineProps<{ engine: Engine }>();
 
@@ -12,6 +14,7 @@ type RadarAsteroid = {
 	amount: string;
 	distance: string;
 	active: boolean;
+	loaded: boolean;
 };
 
 type RadarStation = {
@@ -19,11 +22,12 @@ type RadarStation = {
 	name: string;
 	distance: string,
 	active: boolean,
-	visible: boolean
+	loaded: boolean
 }
 
 const asteroids = ref<RadarAsteroid[]>([]);
 const stations = ref<RadarStation[]>([]);
+const actors = ref(0);
 
 const isMiningActive = ref(false);
 const MAX_ITEMS = 40;
@@ -32,7 +36,9 @@ const isActive = (asteroidId: number, playerSelectedId: number | undefined) => {
 };
 
 const syncRadar = () => {
-	const scene = props.engine.currentScene;
+	const scene = props.engine.currentScene as Mining;
+	actors.value = scene.loaded.keys().toArray().length;
+
 	if (!(scene instanceof Mining)) {
 		isMiningActive.value = false;
 		asteroids.value = [];
@@ -45,8 +51,8 @@ const syncRadar = () => {
 	const player = scene.player;
 	const playerPos = player.pos;
 
-	asteroids.value = scene.asteroids
-		.filter((asteroid) => asteroid.isActive)
+	asteroids.value = Array.from(scene.streamables)
+		.filter((asteroid) => asteroid instanceof Asteroid)
 		.sort((a, b) => {
 			return playerPos.distance(a.pos) - playerPos.distance(b.pos);
 		})
@@ -59,11 +65,12 @@ const syncRadar = () => {
 				amount: formatAmount(asteroid.amount),
 				distance: formatDistance(distance),
 				active: isActive(asteroid.id, player.selectedItem?.id),
+				loaded: scene.loaded.has(asteroid),
 			};
 		});
 
-	stations.value = scene.stations
-		.filter((station) => station.isActive)
+	stations.value = Array.from(scene.streamables)
+		.filter((station) => station instanceof Station)
 		.sort((a, b) => {
 			return playerPos.distance(a.pos) - playerPos.distance(b.pos);
 		})
@@ -75,7 +82,7 @@ const syncRadar = () => {
 				name: station.name,
 				distance: formatDistance(distance),
 				active: isActive(station.id, player.selectedItem?.id),
-				visible: !station.isOffScreen,
+				loaded: scene.loaded.has(station)
 			};
 		});
 };
@@ -105,6 +112,11 @@ function clickAsteroid(asteroidId: number) {
 <template>
 	<div v-if="isMiningActive" class="radar">
 		<div class="panel radar_stations">
+			<h3>Total Actors in Scene</h3>
+			<p>{{ actors }}</p>
+		</div>
+
+		<div class="panel radar_stations">
 			<h3>Stations</h3>
 			<div @click="clickStation(station.id)" v-for="station in stations" :key="station.id"
 				:class="{ radarItem: true, active: station.active }">
@@ -112,7 +124,7 @@ function clickAsteroid(asteroidId: number) {
 
 				<div class="radarItem_content">
 					<p>
-						<strong>{{ station.visible }}</strong>
+						<strong>{{ station.loaded }}</strong>
 					</p>
 					<p>
 						<strong>{{ station.distance }}</strong>
@@ -125,7 +137,7 @@ function clickAsteroid(asteroidId: number) {
 			<h3>Asteroids</h3>
 			<div @click="clickAsteroid(asteroid.id)" v-for="asteroid in asteroids" :key="asteroid.id"
 				:class="{ radarItem: true, active: asteroid.active }">
-				<h3>{{ asteroid.ore }}</h3>
+				<h3>{{ asteroid.ore }} - Loaded = {{ asteroid.loaded }}</h3>
 
 				<div class="radarItem_content">
 					<p>
