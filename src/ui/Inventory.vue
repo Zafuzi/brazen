@@ -7,6 +7,7 @@ import { formatAmount } from "../lib/math";
 const props = defineProps<{ engine: Engine }>();
 const isMiningActive = ref(false);
 const inventory = ref<{ name: string, amount: number }[]>([]);
+const isOpen = ref(false);
 
 const syncInventory = () => {
 	const scene = props.engine.currentScene;
@@ -39,8 +40,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-	<div class="panel player_inventory">
-		<h3>Inventory</h3>
+	<div :class="{panel: true, player_inventory: true, open: isOpen}">
+		<h3 @click="isOpen = !isOpen">Inventory</h3>
 		<div class="panel player_inventory_container">
 			<div class="player_inventory_item" v-for="item in inventory" :key="item.name">
 				<p>{{ item.name }}</p>
@@ -53,8 +54,8 @@ onBeforeUnmount(() => {
 <style lang="less">
 .player_inventory {
 	position: absolute;
-	bottom: 100px;
-	left: 20px;
+	bottom: var(--inset-bottom);
+	left: var(--inset-left);
 
 	max-width: 300px;
 	height: 300px;
@@ -66,11 +67,21 @@ onBeforeUnmount(() => {
 
 	gap: 8px;
 
+	&:not(.open) {
+	    height: min-content;
+	    .player_inventory_container {
+			display: none;
+			visibility: hidden;
+			height: 0;
+		}
+ 	}
+
 
 	h3 {
+	    width: 100%;
 		margin: 0 auto;
 		color: white;
-		margin-bottom: 8px;
+		text-align: center;
 	}
 
 	.player_inventory_container {

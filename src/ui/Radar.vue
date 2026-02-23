@@ -30,6 +30,9 @@ const stations = ref<RadarStation[]>([]);
 const actors = ref(0);
 
 const isMiningActive = ref(false);
+const isStationsOpen = ref(true);
+const isAsteroidsOpen = ref(true);
+
 const MAX_ITEMS = 40;
 const isActive = (asteroidId: number, playerSelectedId: number | undefined) => {
 	return asteroidId === playerSelectedId;
@@ -107,25 +110,18 @@ function clickAsteroid(asteroidId: number) {
 		(props.engine.currentScene as Mining).asteroids.find((a) => a.id === asteroidId),
 	);
 }
+
 </script>
 
 <template>
 	<div v-if="isMiningActive" class="radar">
-		<div class="panel radar_stations">
-			<h3>Total Actors in Scene</h3>
-			<p>{{ actors }}</p>
-		</div>
-
-		<div class="panel radar_stations">
-			<h3>Stations</h3>
+		<div :class="{panel:true, radar_stations: true, open: isStationsOpen}">
+			<h3 @click="isStationsOpen = !isStationsOpen">Stations</h3>
 			<div @click="clickStation(station.id)" v-for="station in stations" :key="station.id"
 				:class="{ radarItem: true, active: station.active }">
-				<h3>{{ station.name }}</h3>
+				<h4>{{ station.name }}</h4>
 
 				<div class="radarItem_content">
-					<p>
-						<strong>{{ station.loaded }}</strong>
-					</p>
 					<p>
 						<strong>{{ station.distance }}</strong>
 					</p>
@@ -133,21 +129,23 @@ function clickAsteroid(asteroidId: number) {
 			</div>
 		</div>
 
-		<div class="panel radar_asteroids">
-			<h3>Asteroids</h3>
-			<div @click="clickAsteroid(asteroid.id)" v-for="asteroid in asteroids" :key="asteroid.id"
-				:class="{ radarItem: true, active: asteroid.active }">
-				<h3>{{ asteroid.ore }} - Loaded = {{ asteroid.loaded }}</h3>
+		<div :class="{panel:true, radar_asteroids: true, open: isAsteroidsOpen}">
+			<h3 @click="isAsteroidsOpen = !isAsteroidsOpen">Asteroids</h3>
+			<div class="panel_content">
+    			<div @click="clickAsteroid(asteroid.id)" v-for="asteroid in asteroids" :key="asteroid.id"
+    				:class="{ radarItem: true, active: asteroid.active }">
+    				<h4>
+                        {{ asteroid.ore }}
+                        -
+  						<strong>({{ asteroid.amount }})</strong>
+                    </h4>
 
-				<div class="radarItem_content">
-					<p>
-						<strong>{{ asteroid.amount }}</strong>
-					</p>
-
-					<p>
-						<strong>{{ asteroid.distance }}</strong>
-					</p>
-				</div>
+    				<div class="radarItem_content">
+    					<p>
+       						<strong>{{ asteroid.distance }}</strong>
+    					</p>
+    				</div>
+    			</div>
 			</div>
 		</div>
 	</div>
@@ -156,8 +154,9 @@ function clickAsteroid(asteroidId: number) {
 <style scoped lang="less">
 .radar {
 	position: absolute;
-	bottom: 100px;
-	right: 20px;
+	top: var(--inset-top);
+	bottom: var(--inset-bottom);
+	right: var(--inset-right);
 
 	max-width: 30%;
 	width: 100%;
@@ -166,11 +165,11 @@ function clickAsteroid(asteroidId: number) {
 
 	display: flex;
 	align-items: start;
-	justify-content: start;
+	justify-content: space-between;
 	flex-flow: column;
 
-	gap: 8px;
-	padding: 8px;
+	gap: 4px;
+	padding: 4px;
 
 	.radar_asteroids,
 	.radar_stations {
@@ -178,13 +177,13 @@ function clickAsteroid(asteroidId: number) {
 		grid-template-columns: 1fr;
 
 		width: 100%;
-		margin-bottom: 8px;
 
-		max-height: 300px;
-		overflow-y: auto;
+		position: relative;
 
-		&>h3 {
-			padding: 4px;
+		&:not(.open) {
+		    .radarItem {
+				display: none;
+			}
 		}
 	}
 
@@ -217,5 +216,6 @@ function clickAsteroid(asteroidId: number) {
 			flex-direction: column;
 		}
 	}
+
 }
 </style>

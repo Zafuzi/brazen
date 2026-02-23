@@ -5,6 +5,17 @@
 
 	--primary: rgb(122, 98, 157, 0.8);
 	--bg: rgba(27, 22, 35, 0.8);
+	--rounding: 5px;
+
+	--inset-left: calc(env(safe-area-inset-left, 0) + 10px);
+	--inset-right: calc(env(safe-area-inset-right, 0) + 10px);
+	--inset-top: calc(env(safe-area-inset-top, 0) + 10px);
+	--inset-bottom: calc(env(safe-area-inset-bottom, 0) + 10px);
+
+	--sb-track-color: color-mix(in srgb, var(--primary) 20%, black 80%);
+	--sb-thumb-color: var(--primary);
+	--sb-border-color: var(--sb-track-color);
+	--sb-size: 24px;
 }
 
 body,
@@ -29,35 +40,39 @@ html {
 }
 
 .panel {
-	--sb-track-color: rgb(0, 0, 0, 0.1);
-	--sb-thumb-color: var(--primary);
-	--sb-border-color: var(--sb-track-color);
-	--sb-size: 16px;
-
 	background-color: var(--bg);
-	border: 5px solid var(--bg);
 	color: #fafafa;
 	backdrop-filter: blur(10px);
 
-	min-width: 50px;
-	min-height: 50px;
-
-	border-radius: 5px;
+	border-radius: var(--rounding);
+	overflow: hidden;
 	pointer-events: all;
 	z-index: 999;
+
+	h3 {
+        background-color: color-mix(in srgb, var(--primary) 20%, transparent 80%);
+        padding: 8px;
+	}
+
+	.panel_content {
+  		max-height: 300px;
+  		overflow-y: auto;
+        overflow-x: hidden;
+    }
 }
 
-.panel::-webkit-scrollbar {
+::-webkit-scrollbar {
 	width: var(--sb-size);
 }
 
-.panel::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
 	background: var(--sb-track-color);
 	backdrop-filter: blur(10px);
 }
 
-.panel::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	border-radius: 8px;
+	border: calc(var(--sb-size) / 4) solid var(--sb-border-color);
 	background: var(--sb-thumb-color);
 }
 
@@ -80,10 +95,10 @@ button {
 
 .mining {
 	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
+	left: env(safe-area-inset-left, 0);
+	right: env(safe-area-inset-right, 0);
+	top: env(safe-area-inset-top, 0);
+	bottom: env(safe-area-inset-bottom, 0);
 
 	pointer-events: none;
 
@@ -104,8 +119,8 @@ button {
 
 .tutorial {
 	position: absolute;
-	top: 20px;
-	left: 20px;
+	top: var(--inset-top);
+	left: var(--inset-left);
 	font-size: 18px;
 	padding: 8px;
 

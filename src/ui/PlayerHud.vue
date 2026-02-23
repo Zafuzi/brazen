@@ -22,6 +22,7 @@ const syncPlayer = () => {
 		acc: pl.acc,
 		pos: pl.pos,
 		fuel: pl.fuel,
+		credits: pl.credits,
 		angularVelocity: pl.angularVelocity,
 	};
 };
@@ -35,42 +36,23 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-	<div v-if="isMiningActive" class="panel player_motion">
+	<div v-if="isMiningActive" class="player_motion">
+    	<div class="player_motion_row">
+    		<div class="player_motion_row_data">
+    			<p>{{ formatNumberFast(player.credits) }} Credits</p>
+    		</div>
+    	</div>
+
 		<div class="player_motion_row">
-			<p>Fuel:</p>
 			<div class="player_motion_row_data">
-				<p>{{ formatNumberFast(player.fuel) }}</p>
+				<p>{{ formatNumberFast(player.fuel) }} Fuel</p>
 			</div>
 		</div>
 
 		<div class="player_motion_row">
-			<p>Position:</p>
-			<div class="player_motion_row_data">
-				<p>{{ formatDistance(player.pos.x) }}</p>
-				<p>{{ formatDistance(player.pos.y) }}</p>
-			</div>
-		</div>
-
-		<div class="player_motion_row">
-			<p>Velocity:</p>
 			<div class="player_motion_row_data">
 				<p>{{ formatVelocity(player.vel.x) }}</p>
 				<p>{{ formatVelocity(player.vel.y) }}</p>
-			</div>
-		</div>
-
-		<div class="player_motion_row">
-			<p>Acceleration</p>
-			<div class="player_motion_row_data">
-				<p>{{ formatAcceleration(player.acc.x) }}</p>
-				<p>{{ formatAcceleration(player.acc.y) }}</p>
-			</div>
-		</div>
-
-		<div class="player_motion_row">
-			<p>Angular Velocity</p>
-			<div class="player_motion_row_data">
-				<p class="grid-fill">{{ formatVelocity(player.angularVelocity) }}</p>
 			</div>
 		</div>
 	</div>
@@ -83,16 +65,17 @@ onBeforeUnmount(() => {
 	left: 0;
 	right: 0;
 
-	height: 80px;
+	height: auto;
 
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	display: flex;
+	flex-flow: row nowrap;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
 	flex-flow: row nowrap;
 
 	gap: 24px;
+	padding: 12px;
 
 	.player_motion_row {
 		display: flex;
@@ -104,9 +87,14 @@ onBeforeUnmount(() => {
 
 		gap: 8px;
 
+		color: var(--primary);
+		border: 2px solid var(--primary);
+		padding: 8px;
+		border-radius: 100vw;
+
 		.player_motion_row_data {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
+			display: flex;
+			flex-flow: row wrap;
 			align-items: center;
 			justify-content: space-evenly;
 

@@ -11,7 +11,7 @@ import {
 	SolverStrategy,
 	type DirectorNavigationEvent,
 } from "excalibur";
-import { onBeforeUnmount, onDeactivated, onUnmounted, ref } from "vue";
+import { onBeforeUnmount, onDeactivated, ref } from "vue";
 import { Mining } from "./levels/mining";
 import { loader } from "./misc/resources";
 import MainMenu from "./ui/MainMenu.vue";

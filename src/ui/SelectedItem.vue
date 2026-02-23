@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Engine } from "excalibur";
 import { Asteroid } from "../actors/asteroid";
-import { formatAmount, formatDistance, formatNumberFast } from "../lib/math";
+import { formatAmount, formatDistance } from "../lib/math";
 import { onBeforeUnmount, ref } from "vue";
 import { Mining } from "../levels/mining";
 
@@ -46,7 +46,7 @@ onBeforeUnmount(() => {
 
 <template>
 	<div v-if="selected" class="panel selectedItem">
-		<h3>{{ selected.name }}</h3>
+		<h2>{{ selected.name }}</h2>
 		<p class="selectedItem_amount" v-if="selected.amount">{{ selected.amount }}</p>
 		<p class="selectedItem_distance">{{ selected.distance }}</p>
 	</div>
@@ -64,15 +64,16 @@ onBeforeUnmount(() => {
 	gap: 8px;
 	padding: 8px;
 
-	top: 20px;
-	right: 20px;
+	top: var(--inset-top);
+	left: var(--inset-left);
 
 	height: 200px;
 	width: 200px;
 
-	border-radius: 50%;
+	border-radius: var(--rounding);
+	opacity: 0.5;
 
-	h3 {
+	h2 {
 		font-size: 2rem;
 		text-align: center;
 	}

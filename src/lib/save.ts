@@ -15,6 +15,7 @@ const defaults = {
 		volume: 50,
 	},
 	player: {
+  	credits: 0,
 		fuel: 100,
 		pos: {
 			x: 0,

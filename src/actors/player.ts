@@ -60,6 +60,7 @@ export class Player extends Actor {
 
 	public inventory: Map<string, number> = new Map();
 	public fuel = 100;
+  public credits = 0;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -84,6 +85,7 @@ export class Player extends Actor {
 			this.vel = vec(savedState.vel.x, savedState.vel.y);
 			this.angularVelocity = savedState.angularVelocity;
 			this.fuel = savedState.fuel;
+			this.credits = savedState.credits;
 			this.inventory = new Map(savedState.inventory);
 
 			engine.currentScene.camera.pos = this.pos;
@@ -122,25 +124,28 @@ export class Player extends Actor {
 			this.deselectItem();
 		}
 
-		if (keys.indexOf(Keys.X) > -1 || keys.indexOf(Keys.ShiftRight) > -1 || keys.indexOf(Keys.ShiftLeft) > -1) {
-			this.vel = this.vel.scale(0.98);
-			this.angularVelocity *= 0.98;
-		}
+		if (this.fuel > 0) {
+			if (keys.indexOf(Keys.X) > -1 || keys.indexOf(Keys.ShiftRight) > -1 || keys.indexOf(Keys.ShiftLeft) > -1) {
+				this.vel = this.vel.scale(0.989);
+				this.angularVelocity *= 0.989;
+        this.useFuel();
+			}
 
-		if (keys.indexOf(Keys.A) > -1 || keys.indexOf(Keys.ArrowLeft) > -1) {
-			this.thrustTurnLeft();
-		}
+			if (keys.indexOf(Keys.A) > -1 || keys.indexOf(Keys.ArrowLeft) > -1) {
+				this.thrustTurnLeft();
+			}
 
-		if (keys.indexOf(Keys.D) > -1 || keys.indexOf(Keys.ArrowRight) > -1) {
-			this.thrustTurnRight();
-		}
+			if (keys.indexOf(Keys.D) > -1 || keys.indexOf(Keys.ArrowRight) > -1) {
+				this.thrustTurnRight();
+			}
 
-		if (keys.indexOf(Keys.W) > -1 || keys.indexOf(Keys.ArrowUp) > -1) {
-			this.thrustForwardStart();
-		}
+			if (keys.indexOf(Keys.W) > -1 || keys.indexOf(Keys.ArrowUp) > -1) {
+				this.thrustForwardStart();
+			}
 
-		if (keys.indexOf(Keys.S) > -1 || keys.indexOf(Keys.ArrowDown) > -1) {
-			this.thrustReverseStart();
+			if (keys.indexOf(Keys.S) > -1 || keys.indexOf(Keys.ArrowDown) > -1) {
+				this.thrustReverseStart();
+			}
 		}
 
 		for (const actor of this.currentCollisions) {
@@ -200,6 +205,10 @@ export class Player extends Actor {
 		}
 	}
 
+	private useFuel() {
+		this.fuel -= 1 / 100;
+	}
+
 	private startMovementLoopsIfReady(engine: Engine) {
 		if (this.movementLoopsStarted || !engine.isRunning()) {
 			return;
@@ -213,6 +222,7 @@ export class Player extends Actor {
 	autosave() {
 		SaveSystem.setState("player", {
 			fuel: this.fuel,
+			credits: this.credits,
 			pos: { x: this.pos.x, y: this.pos.y },
 			vel: { x: this.vel.x, y: this.vel.y },
 			angularVelocity: this.angularVelocity,
@@ -237,29 +247,30 @@ export class Player extends Actor {
 	}
 
 	thrustForwardStart = () => {
-		if (this.fuel > 0) {
-			this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
-			this.thrust.graphics.opacity = 1;
-			this.thrustSound.volume = 0.5;
-			this.fuel -= 1 / 100;
-		}
+		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
+		this.thrust.graphics.opacity = 1;
+		this.thrustSound.volume = 0.5;
+		this.useFuel();
 	};
 
 	thrustReverseStart = () => {
 		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(-10);
 		this.thrustSound.volume = 0.2;
+		this.useFuel();
 	};
 
 	thrustTurnLeft = () => {
 		this.angularVelocity += -0.1;
 		this.autoPilotEnabled = false;
 		this.thrustSound.volume = 0.3;
+		this.useFuel();
 	};
 
 	thrustTurnRight = () => {
 		this.angularVelocity += 0.1;
 		this.autoPilotEnabled = false;
 		this.thrustSound.volume = 0.3;
+		this.useFuel();
 	};
 
 	thrustEnd = () => {
@@ -268,7 +279,7 @@ export class Player extends Actor {
 		this.thrustSound.volume = 0;
 	};
 
-	rotateTo = (target: Actor, elapsed: number) => {
+  rotateTo = (target: Actor, elapsed: number) => {
 		if (!target) {
 			return;
 		}
@@ -286,6 +297,10 @@ export class Player extends Actor {
 		const rotationSpeed = 2; // radians per second
 
 		this.angularVelocity = diff * Math.min(1, rotationSpeed * elapsed);
+
+    if (diff > 1) {
+      this.useFuel();
+		}
 	};
 
 	selectItem = (target: Actor) => {
