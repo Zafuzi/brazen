@@ -60,7 +60,7 @@ export class Player extends Actor {
 
 	public inventory: Map<string, number> = new Map();
 	public fuel = 100;
-  public credits = 0;
+	public credits = 0;
 
 	private currentCollisions = new Set<Entity>();
 
@@ -128,7 +128,7 @@ export class Player extends Actor {
 			if (keys.indexOf(Keys.X) > -1 || keys.indexOf(Keys.ShiftRight) > -1 || keys.indexOf(Keys.ShiftLeft) > -1) {
 				this.vel = this.vel.scale(0.989);
 				this.angularVelocity *= 0.989;
-        this.useFuel();
+				this.useFuel();
 			}
 
 			if (keys.indexOf(Keys.A) > -1 || keys.indexOf(Keys.ArrowLeft) > -1) {
@@ -279,7 +279,7 @@ export class Player extends Actor {
 		this.thrustSound.volume = 0;
 	};
 
-  rotateTo = (target: Actor, elapsed: number) => {
+	rotateTo = (target: Actor, elapsed: number) => {
 		if (!target) {
 			return;
 		}
@@ -298,8 +298,8 @@ export class Player extends Actor {
 
 		this.angularVelocity = diff * Math.min(1, rotationSpeed * elapsed);
 
-    if (diff > 1) {
-      this.useFuel();
+		if (diff > 1) {
+			this.useFuel();
 		}
 	};
 

@@ -50,15 +50,15 @@ html {
 	z-index: 999;
 
 	h3 {
-        background-color: color-mix(in srgb, var(--primary) 20%, transparent 80%);
-        padding: 8px;
+		background-color: color-mix(in srgb, var(--primary) 20%, transparent 80%);
+		padding: 8px;
 	}
 
 	.panel_content {
-  		max-height: 300px;
-  		overflow-y: auto;
-        overflow-x: hidden;
-    }
+		max-height: 300px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 }
 
 ::-webkit-scrollbar {
