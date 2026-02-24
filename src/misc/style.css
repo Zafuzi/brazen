@@ -3,9 +3,11 @@
 	margin: 0;
 	padding: 0;
 
-	--primary: rgb(122, 98, 157, 0.8);
-	--primary-text: rgb(222, 198, 255, 1);
-	--bg: rgba(27, 22, 35, 0.8);
+	--primary: #fb8149;
+	--primary-text: #fefaef;
+	--light: #fefaef;
+	--dark: #302424;
+	--bg: var(--dark);
 	--rounding: 5px;
 
 	--inset-left: calc(env(safe-area-inset-left, 0) + 10px);
@@ -32,9 +34,6 @@ html {
 	height: 100vh;
 	overflow: hidden;
 
-	background-image: url("./bg/milky-way.jpg");
-	background-size: 100%, 100%;
-	background-position: center center;
 	background-color: black;
 
 	font-size: 12px;
@@ -87,9 +86,9 @@ html {
 }
 
 button {
-	background-color: var(--primary);
+	background-color: var(--primary-text);
 	border: 2px solid rgba(10, 10, 10, 0.8);
-	color: #fafafa;
+	color: var(--bg);
 	font-weight: bold;
 	font-size: 1.5rem;
 	padding: 8px 16px;

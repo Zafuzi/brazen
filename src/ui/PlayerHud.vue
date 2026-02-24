@@ -26,7 +26,6 @@ const syncPlayer = () => {
 		credits: pl.credits,
 		angularVelocity: pl.angularVelocity,
 		autoPilotEnabled: pl.autoPilotEnabled,
-		matchingVelocity: pl.shouldMatchVelocity,
 	};
 };
 
@@ -46,13 +45,6 @@ onBeforeUnmount(() => {
 					:style="{ opacity: player.autoPilotEnabled ? 1 : 0.5 }"
 					:src="Images.AutoPilotIcon.image.src"
 					alt="autopilot icon"
-				/>
-
-				<img
-					:style="{ opacity: player.matchingVelocity ? 1 : 0.5 }"
-					:title="player.matchingVelocity ? 'Matching Target Velocity' : 'Manual Velocity Control'"
-					:src="Images.MatchVelocityIcon.image.src"
-					alt="match velocity icon"
 				/>
 			</div>
 		</div>
