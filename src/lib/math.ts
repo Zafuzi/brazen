@@ -41,6 +41,26 @@ export const formatDistance = (px: number): string => {
 	return `${formatNumberFast(km / 1_000_000_000_000_000)} Em`;
 };
 
+const TIME_UNITS = [
+	{ label: "y", value: 60 * 60 * 24 * 365 },
+	{ label: "d", value: 60 * 60 * 24 },
+	{ label: "h", value: 60 * 60 },
+	{ label: "m", value: 60 },
+	{ label: "s", value: 1 },
+];
+
+export const formatTime = (seconds: number): string => {
+	const abs = Math.abs(seconds);
+
+	for (const unit of TIME_UNITS) {
+		if (abs >= unit.value || unit.label === "s") {
+			return `${formatNumberFast(seconds / unit.value)} ${unit.label}`;
+		}
+	}
+
+	return "0 s";
+};
+
 export const formatVelocity = (pixelsPerSecond: number): string => {
 	const kmPerSecond = pixelsPerSecond / globals.PIXELS_PER_KM;
 

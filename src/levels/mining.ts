@@ -114,12 +114,13 @@ export class Mining extends StreamScene {
 	onPreUpdate(engine: Engine, elapsed: number): void {
 		if (this.updateTick > 500) {
 			const asteroids = this.asteroids
+				.filter((asteroid) => asteroid.isOffScreen)
 				.sort((a, b) => {
 					return this.player.pos.distance(a.pos) - this.player.pos.distance(b.pos);
 				})
 				.slice(0, 5);
 
-			this.hud.setMarkers([...this.stations, ...asteroids]);
+			this.hud.setMarkers([...this.stations.filter((station) => station.isOffScreen), ...asteroids]);
 			this.updateTick = 0;
 		}
 

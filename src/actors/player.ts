@@ -338,9 +338,11 @@ export class Player extends Actor {
 	selectItem = (target: Actor) => {
 		this.selectedItem = target;
 		this.autoPilotEnabled = true;
+		this.reverse = false;
 	};
 
 	deselectItem = () => {
 		this.selectedItem = undefined;
+		this.reverse = false;
 	};
 }

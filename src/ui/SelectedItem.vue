@@ -3,7 +3,7 @@ import { Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
 import { Asteroid } from "../actors/asteroid";
 import { Mining } from "../levels/mining";
-import { formatAmount, formatDistance } from "../lib/math";
+import { formatAmount, formatDistance, formatTime } from "../lib/math";
 
 const props = defineProps<{ engine: Engine; toggleRefinery: Function }>();
 const isMiningActive = ref(false);
@@ -33,7 +33,13 @@ const syncSelected = () => {
 			amount,
 			distance,
 			rawDistance: pl.pos.distance(scene.player.pos),
+			tta: 0,
 		};
+
+		const vel = scene.player.vel;
+		if (vel.magnitude > 1) {
+			selected.value.tta = selected.value.rawDistance / vel.magnitude;
+		}
 	}
 };
 
@@ -64,6 +70,7 @@ function canDock(range: number) {
 		<h2>{{ selected.name }}</h2>
 		<p class="selectedItem_amount" v-if="selected.amount">{{ selected.amount }}</p>
 		<p class="selectedItem_distance">{{ selected.distance }}</p>
+		<p v-if="selected.tta">TTA: {{ formatTime(selected.tta) }}</p>
 		<div v-if="canDock(1_000)">
 			<button class="button button-primary" @click="dockToStation">Dock</button>
 		</div>
