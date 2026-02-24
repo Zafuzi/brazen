@@ -266,12 +266,14 @@ export class Player extends Actor {
 		if (!this.selectedItem || !this.shouldMatchVelocity) return;
 
 		const diff = this.selectedItem.vel.sub(this.vel);
-
-		this.vel = this.selectedItem.vel;
-		this.acc = diff.scale(0.01);
+		this.acc = diff.scale(0.1);
 
 		if (diff.magnitude > 0.1) {
 			this.useFuel();
+		} else {
+			this.vel = this.selectedItem.vel;
+			this.acc = vec(0, 0);
+			this.shouldMatchVelocity = false;
 		}
 	}
 
