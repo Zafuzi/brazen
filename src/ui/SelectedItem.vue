@@ -58,7 +58,7 @@ function dockToStation() {
 
 <template>
 	<div v-if="selected" class="panel selectedItem">
-		<h2>{{ selected.name }} {{selected.type}}</h2>
+		<h2>{{ selected.name }} {{ selected.type }}</h2>
 		<p class="selectedItem_amount" v-if="selected.amount">{{ selected.amount }}</p>
 		<p class="selectedItem_distance">{{ selected.distance }}</p>
 		<div v-if="selected.type == 'Station' && isInRange(1_000)">
