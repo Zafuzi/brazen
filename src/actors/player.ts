@@ -266,7 +266,7 @@ export class Player extends Actor {
 		if (!this.selectedItem || !this.shouldMatchVelocity) return;
 
 		const diff = this.selectedItem.vel.sub(this.vel);
-		this.acc = diff.scale(0.1);
+		this.acc = diff.scale(0.88);
 
 		if (diff.magnitude > 0.1) {
 			this.useFuel();
