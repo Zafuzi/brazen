@@ -36,7 +36,7 @@ export class Player extends Actor {
 	private miningRate: number = 0.25;
 	private miningRange: number = 5_000;
 	private miningTarget: Asteroid | undefined;
-	private beamLine: Sprite = Images.Thrust_purple.toSprite({
+	private beamLine: Sprite = Images.Thrust_red.toSprite({
 		destSize: {
 			width: 10,
 			height: this.miningRange,
@@ -88,9 +88,16 @@ export class Player extends Actor {
 			this.pos = vec(savedState.pos.x, savedState.pos.y);
 			this.vel = vec(savedState.vel.x, savedState.vel.y);
 			this.angularVelocity = savedState.angularVelocity;
+			this.rotation = savedState.rotation;
 			this.fuel = savedState.fuel;
 			this.credits = savedState.credits;
 			this.inventory = new Map(savedState.inventory);
+			if (savedState.selectedItem) {
+				const selected = engine.currentScene.actors.find((a) => a.id === savedState.selectedItem);
+				if (selected) {
+					this.selectItem(selected);
+				}
+			}
 
 			engine.currentScene.camera.pos = this.pos;
 			engine.currentScene.camera.strategy.lockToActor(this);
@@ -241,7 +248,9 @@ export class Player extends Actor {
 			pos: { x: this.pos.x, y: this.pos.y },
 			vel: { x: this.vel.x, y: this.vel.y },
 			angularVelocity: this.angularVelocity,
+			rotation: this.rotation,
 			inventory: Array.from(this.inventory.entries()),
+			selectedItem: this.selectedItem?.id || 0,
 		});
 	}
 
