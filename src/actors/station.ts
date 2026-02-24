@@ -1,4 +1,5 @@
 import { Actor, CollisionType, CompositeCollider, Engine, Shape, toRadians, vec, type ActorArgs } from "excalibur";
+import { SaveSystem } from "../lib/save";
 import { Images } from "../misc/resources";
 import { OreTypes, type OreType } from "./asteroid";
 
@@ -23,7 +24,10 @@ export const OrePrices: OrePrice[] = OreTypes.map((key, index) => {
 });
 
 export class Station extends Actor {
-	constructor(options?: ActorArgs) {
+	public variant: keyof typeof Images = "Station_00";
+	public refining: { ore: string; refined: number; amount: number; startAmount: number }[] = [];
+
+	constructor(options?: { variant?: keyof typeof Images } & ActorArgs) {
 		super({
 			name: "Station",
 			pos: vec(0, -400),
@@ -31,11 +35,33 @@ export class Station extends Actor {
 			angularVelocity: toRadians(2),
 			...options,
 		});
+
+		if (options?.variant) {
+			this.variant = options.variant;
+		}
+	}
+
+	onPostUpdate(engine: Engine, elapsed: number): void {
+		if (this.refining.length) {
+			this.refining.forEach((ore) => {
+				if (ore.amount > 0) {
+					let rate = 1 / 100;
+					if (ore.amount - rate < 0) {
+						rate = ore.amount;
+						ore.amount = 0;
+						ore.refined += rate;
+						return;
+					}
+
+					ore.amount -= rate;
+					ore.refined = (ore.refined ?? 0) + rate;
+				}
+			});
+		}
 	}
 
 	onInitialize(engine: Engine): void {
-		const image = Images.Station_00.toSprite();
-
+		const image = Images[this.variant].toSprite();
 		this.graphics.add(image);
 
 		const width = image.width;
@@ -52,5 +78,13 @@ export class Station extends Actor {
 				Shape.Circle(centerRadius / 1.5, vec(-cornerRadius, cornerRadius)),
 			]),
 		);
+
+		SaveSystem.getState("stations").then((stations) => {
+			stations.forEach((station) => {
+				if (station.name === this.name) {
+					this.refining = station.refining;
+				}
+			});
+		});
 	}
 }

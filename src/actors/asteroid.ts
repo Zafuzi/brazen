@@ -167,12 +167,7 @@ export class Asteroid extends Actor {
 			collisionType: CollisionType.Fixed,
 			angularVelocity: options?.angularVelocity ?? randomInRange(-Math.PI, Math.PI),
 			vel: options?.vel ?? vec(randomInRange(-range, range), randomInRange(-range, range)),
-			pos:
-				options?.pos ??
-				vec(
-					randomIntInRange(0, 1) ? randomInRange(-50_000, -10_000) : randomInRange(10_000, 50_000),
-					randomInRange(-100_000, 100_000),
-				),
+			pos: options?.pos ?? vec(randomInRange(-200_000, -10_000), randomInRange(-1_000_000, 1_000_000)),
 		});
 
 		this.startAmount = options?.startAmount ?? randomIntInRange(1_000, 10_000);
@@ -238,7 +233,7 @@ export class Asteroid extends Actor {
 	}
 
 	mine(miningRate: number) {
-		this.amount -= miningRate;
+		this.amount = Math.round(this.amount - miningRate);
 
 		const ratio = this.amount / this.startAmount;
 		this.scale = vec(ratio, ratio);

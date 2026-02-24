@@ -13,15 +13,23 @@ import {
 } from "excalibur";
 import { onBeforeUnmount, onDeactivated, ref } from "vue";
 import { Mining } from "./levels/mining";
+import { Refinery } from "./levels/refinery";
+import { SaveSystem } from "./lib/save";
 import { loader } from "./misc/resources";
-import MainMenu from "./ui/MainMenu.vue";
-import Radar from "./ui/Radar.vue";
-import PlayerHud from "./ui/PlayerHud.vue";
-import SelectedItem from "./ui/SelectedItem.vue";
 import Inventory from "./ui/Inventory.vue";
+import MainMenu from "./ui/MainMenu.vue";
+import PlayerHud from "./ui/PlayerHud.vue";
+import Radar from "./ui/Radar.vue";
+import RefineryUI from "./ui/RefineryUI.vue";
+import SelectedItem from "./ui/SelectedItem.vue";
 
 const hidden = ref(true);
-const scene = ref("start");
+const scene = ref("");
+const showRefinery = ref(false);
+
+SaveSystem.getState("engine").then((savedState) => {
+	scene.value = savedState.scene;
+});
 
 const engine = new Engine({
 	displayMode: DisplayMode.FillScreen,
@@ -42,6 +50,7 @@ const engine = new Engine({
 
 engine.start("start", { loader }).then(() => {
 	engine.add("Mining", Mining);
+	engine.add("Refinery", Refinery);
 
 	let oldScene = engine.director.currentSceneName;
 	engine.input.keyboard.on("press", (event: KeyEvent) => {
@@ -56,16 +65,9 @@ engine.start("start", { loader }).then(() => {
 					oldScene = engine.director.currentSceneName;
 					engine.director.goToScene("start");
 				}
-
-				break;
-			case Keys.O:
-				engine.director.goToScene("OreStation");
 				break;
 			case Keys.M:
 				engine.director.goToScene("Mining");
-				break;
-			case Keys.F:
-				engine.director.goToScene("FuelDepot");
 				break;
 		}
 	});
@@ -105,9 +107,18 @@ if (import.meta.hot) {
 }
 
 function hotSave() {
+	let sceneName = scene.value;
 	if (engine?.currentScene instanceof Mining) {
 		(engine.currentScene as Mining).autosave();
 	}
+
+	SaveSystem.setState("engine", {
+		scene: sceneName === "Mining" ? "start" : sceneName,
+	});
+}
+
+function toggleRefinery() {
+	showRefinery.value = !showRefinery.value;
 }
 </script>
 
@@ -116,8 +127,9 @@ function hotSave() {
 		<MainMenu v-if="scene === 'start'" :engine="engine" />
 		<Radar v-if="scene === 'Mining'" :engine="engine" />
 		<PlayerHud v-if="scene === 'Mining'" :engine="engine" />
-		<SelectedItem v-if="scene === 'Mining'" :engine="engine" />
+		<SelectedItem v-if="scene === 'Mining'" :toggleRefinery="toggleRefinery" :engine="engine" />
 		<Inventory v-if="scene === 'Mining'" :engine="engine" />
+		<RefineryUI v-if="showRefinery" :toggleRefinery="toggleRefinery" :engine="engine" />
 	</div>
 </template>
 

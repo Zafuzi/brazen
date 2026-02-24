@@ -4,6 +4,7 @@
 	padding: 0;
 
 	--primary: rgb(122, 98, 157, 0.8);
+	--primary-text: rgb(222, 198, 255, 1);
 	--bg: rgba(27, 22, 35, 0.8);
 	--rounding: 5px;
 
@@ -16,6 +17,8 @@
 	--sb-thumb-color: var(--primary);
 	--sb-border-color: var(--sb-track-color);
 	--sb-size: 24px;
+
+	--panel-layer: 999;
 }
 
 body,
@@ -47,9 +50,10 @@ html {
 	border-radius: var(--rounding);
 	overflow: hidden;
 	pointer-events: all;
-	z-index: 999;
+	z-index: var(--panel-layer);
 
 	h3 {
+		cursor: pointer;
 		background-color: color-mix(in srgb, var(--primary) 20%, transparent 80%);
 		padding: 8px;
 	}

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Engine } from "excalibur";
-import { Asteroid } from "../actors/asteroid";
-import { formatAmount, formatDistance } from "../lib/math";
 import { onBeforeUnmount, ref } from "vue";
+import { Asteroid } from "../actors/asteroid";
 import { Mining } from "../levels/mining";
+import { formatAmount, formatDistance } from "../lib/math";
 
-const props = defineProps<{ engine: Engine }>();
+const props = defineProps<{ engine: Engine; toggleRefinery: Function }>();
 const isMiningActive = ref(false);
 const selected = ref();
 
@@ -29,9 +29,11 @@ const syncSelected = () => {
 		}
 
 		selected.value = {
+			type: pl.constructor.name,
 			name,
 			amount,
-			distance
+			distance,
+			rawDistance: pl.pos.distance(scene.player.pos),
 		};
 	}
 };
@@ -42,6 +44,16 @@ syncSelected();
 onBeforeUnmount(() => {
 	updateSubscription.close();
 });
+
+function canInterface() {
+	return selected.value.rawDistance < 500 && selected.value.type === "Station";
+}
+
+function dockToStation() {
+	const scene = props.engine.currentScene as Mining;
+	scene.player.dockTo(selected.value);
+	props.toggleRefinery();
+}
 </script>
 
 <template>
@@ -49,6 +61,9 @@ onBeforeUnmount(() => {
 		<h2>{{ selected.name }}</h2>
 		<p class="selectedItem_amount" v-if="selected.amount">{{ selected.amount }}</p>
 		<p class="selectedItem_distance">{{ selected.distance }}</p>
+		<div v-if="canInterface()">
+			<button class="button button-primary" @click="dockToStation">Dock</button>
+		</div>
 	</div>
 </template>
 
@@ -71,7 +86,6 @@ onBeforeUnmount(() => {
 	width: 200px;
 
 	border-radius: var(--rounding);
-	opacity: 0.5;
 
 	h2 {
 		font-size: 2rem;

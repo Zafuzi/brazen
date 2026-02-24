@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
-import { Mining } from "../levels/mining";
-import { formatAmount, formatDistance } from "../lib/math";
 import { Asteroid } from "../actors/asteroid";
 import { Station } from "../actors/station";
+import { Mining } from "../levels/mining";
+import { formatAmount, formatDistance } from "../lib/math";
 
 const props = defineProps<{ engine: Engine }>();
 
@@ -20,10 +20,10 @@ type RadarAsteroid = {
 type RadarStation = {
 	id: number;
 	name: string;
-	distance: string,
-	active: boolean,
-	loaded: boolean
-}
+	distance: string;
+	active: boolean;
+	loaded: boolean;
+};
 
 const asteroids = ref<RadarAsteroid[]>([]);
 const stations = ref<RadarStation[]>([]);
@@ -85,7 +85,7 @@ const syncRadar = () => {
 				name: station.name,
 				distance: formatDistance(distance),
 				active: isActive(station.id, player.selectedItem?.id),
-				loaded: scene.loaded.has(station)
+				loaded: scene.loaded.has(station),
 			};
 		});
 };
@@ -110,15 +110,18 @@ function clickAsteroid(asteroidId: number) {
 		(props.engine.currentScene as Mining).asteroids.find((a) => a.id === asteroidId),
 	);
 }
-
 </script>
 
 <template>
 	<div v-if="isMiningActive" class="radar">
-		<div :class="{panel:true, radar_stations: true, open: isStationsOpen}">
+		<div :class="{ panel: true, radar_stations: true, open: isStationsOpen }">
 			<h3 @click="isStationsOpen = !isStationsOpen">Stations</h3>
-			<div @click="clickStation(station.id)" v-for="station in stations" :key="station.id"
-				:class="{ radarItem: true, active: station.active }">
+			<div
+				@click="clickStation(station.id)"
+				v-for="station in stations"
+				:key="station.id"
+				:class="{ radarItem: true, active: station.active }"
+			>
 				<h4>{{ station.name }}</h4>
 
 				<div class="radarItem_content">
@@ -129,23 +132,27 @@ function clickAsteroid(asteroidId: number) {
 			</div>
 		</div>
 
-		<div :class="{panel:true, radar_asteroids: true, open: isAsteroidsOpen}">
+		<div :class="{ panel: true, radar_asteroids: true, open: isAsteroidsOpen }">
 			<h3 @click="isAsteroidsOpen = !isAsteroidsOpen">Asteroids</h3>
 			<div class="panel_content">
-    			<div @click="clickAsteroid(asteroid.id)" v-for="asteroid in asteroids" :key="asteroid.id"
-    				:class="{ radarItem: true, active: asteroid.active }">
-    				<h4>
-                        {{ asteroid.ore }}
-                        -
-  						<strong>({{ asteroid.amount }})</strong>
-                    </h4>
+				<div
+					@click="clickAsteroid(asteroid.id)"
+					v-for="asteroid in asteroids"
+					:key="asteroid.id"
+					:class="{ radarItem: true, active: asteroid.active }"
+				>
+					<h4>
+						{{ asteroid.ore }}
+						-
+						<strong>({{ asteroid.amount }})</strong>
+					</h4>
 
-    				<div class="radarItem_content">
-    					<p>
-       						<strong>{{ asteroid.distance }}</strong>
-    					</p>
-    				</div>
-    			</div>
+					<div class="radarItem_content">
+						<p>
+							<strong>{{ asteroid.distance }}</strong>
+						</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -181,7 +188,7 @@ function clickAsteroid(asteroidId: number) {
 		position: relative;
 
 		&:not(.open) {
-		    .radarItem {
+			.radarItem {
 				display: none;
 			}
 		}
@@ -216,6 +223,5 @@ function clickAsteroid(asteroidId: number) {
 			flex-direction: column;
 		}
 	}
-
 }
 </style>

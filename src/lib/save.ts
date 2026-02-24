@@ -10,7 +10,15 @@ export type SavedAsteroid = {
 	variation: number;
 };
 
-const defaults = {
+export type SavedStation = {
+	name: string;
+	refining: { ore: string; refined: number; amount: number; startAmount: number }[];
+};
+
+export const SaveDefaults = {
+	engine: {
+		scene: "start",
+	},
 	options: {
 		volume: 50,
 	},
@@ -29,10 +37,10 @@ const defaults = {
 		inventory: [] as PlayerInventoryEntry[],
 	},
 	asteroids: [] as SavedAsteroid[],
-	stations: [] as any[],
+	stations: [] as SavedStation[],
 };
 
-type Defaults = typeof defaults;
+export type Defaults = typeof SaveDefaults;
 type SaveKey = keyof Defaults;
 export type SaveEntry = {
 	key: string;
@@ -47,7 +55,7 @@ export class SaveSystem {
 	private static dbPromise: Promise<IDBDatabase> | null = null;
 
 	static defaultState<K extends SaveKey>(key: K): Defaults[K] {
-		return defaults[key];
+		return SaveDefaults[key];
 	}
 
 	static async getState<K extends SaveKey>(key: K): Promise<Defaults[K]> {
@@ -58,10 +66,10 @@ export class SaveSystem {
 			const request = store.get(key) as IDBRequest<Defaults[K] | undefined>;
 			const savedData = await this.requestToPromise(request);
 
-			return savedData ?? defaults[key];
+			return savedData ?? SaveDefaults[key];
 		} catch (e) {
 			console.error("Failed to load data for:", key, e);
-			return defaults[key];
+			return SaveDefaults[key];
 		}
 	}
 

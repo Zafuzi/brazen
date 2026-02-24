@@ -50,6 +50,7 @@ export class Player extends Actor {
 	});
 
 	public selectedItem: Actor | undefined;
+	public isDocked: boolean = false;
 
 	private autoPilotEnabled: boolean = false;
 
@@ -63,6 +64,7 @@ export class Player extends Actor {
 	public credits = 0;
 
 	private currentCollisions = new Set<Entity>();
+	private reverse: boolean = false;
 
 	constructor() {
 		super({
@@ -110,6 +112,17 @@ export class Player extends Actor {
 
 		//@ts-ignore
 		engine.events.on("selectedItem", this.selectItem);
+
+		engine.input.keyboard.on("hold", () => {
+			engine.canvas.focus();
+		});
+
+		engine.input.keyboard.on("press", (event) => {
+			const key = event.key;
+			if (key === Keys.Space) {
+				this.reverse = !this.reverse;
+			}
+		});
 	}
 
 	onPreUpdate(engine: Engine, elapsed: number): void {
@@ -206,7 +219,7 @@ export class Player extends Actor {
 	}
 
 	private useFuel() {
-		this.fuel -= 1 / 100;
+		this.fuel -= 1 / 1_000;
 	}
 
 	private startMovementLoopsIfReady(engine: Engine) {
@@ -242,6 +255,18 @@ export class Player extends Actor {
 		this.fuel = clamp(this.fuel, 0, 100);
 	}
 
+	dockTo(target: Actor) {
+		this.vel = vec(0, 0);
+		this.acc = vec(0, 0);
+		this.angularVelocity = 0;
+		this.thrustEnd();
+		this.isDocked = true;
+	}
+
+	unDock() {
+		this.isDocked = false;
+	}
+
 	onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact): void {
 		this.hitSound.play();
 	}
@@ -262,6 +287,7 @@ export class Player extends Actor {
 	thrustTurnLeft = () => {
 		this.angularVelocity += -0.1;
 		this.autoPilotEnabled = false;
+		this.reverse = false;
 		this.thrustSound.volume = 0.3;
 		this.useFuel();
 	};
@@ -269,6 +295,7 @@ export class Player extends Actor {
 	thrustTurnRight = () => {
 		this.angularVelocity += 0.1;
 		this.autoPilotEnabled = false;
+		this.reverse = false;
 		this.thrustSound.volume = 0.3;
 		this.useFuel();
 	};
@@ -284,7 +311,12 @@ export class Player extends Actor {
 			return;
 		}
 
-		const delta = target.pos.sub(this.pos);
+		let delta;
+		if (this.reverse) {
+			delta = this.pos.sub(target.pos);
+		} else {
+			delta = target.pos.sub(this.pos);
+		}
 
 		const targetAngle = Math.atan2(delta.y, delta.x);
 

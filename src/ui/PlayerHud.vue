@@ -2,7 +2,7 @@
 import { type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
 import { Mining } from "../levels/mining";
-import { formatAcceleration, formatDistance, formatNumberFast, formatVelocity } from "../lib/math";
+import { formatNumberFast, formatVelocity } from "../lib/math";
 
 const props = defineProps<{ engine: Engine }>();
 const isMiningActive = ref(false);
@@ -37,11 +37,11 @@ onBeforeUnmount(() => {
 
 <template>
 	<div v-if="isMiningActive" class="player_motion">
-    	<div class="player_motion_row">
-    		<div class="player_motion_row_data">
-    			<p>{{ formatNumberFast(player.credits) }} Credits</p>
-    		</div>
-    	</div>
+		<div class="player_motion_row">
+			<div class="player_motion_row_data">
+				<p>{{ formatNumberFast(player.credits) }} Credits</p>
+			</div>
+		</div>
 
 		<div class="player_motion_row">
 			<div class="player_motion_row_data">
@@ -61,9 +61,9 @@ onBeforeUnmount(() => {
 <style lang="less">
 .player_motion {
 	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
+	bottom: var(--inset-bottom);
+	left: 50%;
+	transform: translateX(-50%);
 
 	height: auto;
 
@@ -76,6 +76,7 @@ onBeforeUnmount(() => {
 
 	gap: 24px;
 	padding: 12px;
+	z-index: var(--panel-layer);
 
 	.player_motion_row {
 		display: flex;
@@ -87,6 +88,7 @@ onBeforeUnmount(() => {
 
 		gap: 8px;
 
+		background-color: color-mix(in srgb, var(--primary) 10%, rgba(0, 0, 0, 0.8));
 		color: var(--primary);
 		border: 2px solid var(--primary);
 		padding: 8px;

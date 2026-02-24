@@ -1,6 +1,7 @@
 import { Engine, Timer, vec, type SceneActivationContext } from "excalibur";
 import { Asteroid, type OreType } from "../actors/asteroid";
 import { Player } from "../actors/player";
+import { PlayerInGameHud } from "../actors/playerInGameHud";
 import { Station } from "../actors/station";
 import { SaveSystem } from "../lib/save";
 import { StreamScene } from "../lib/streamer";
@@ -12,24 +13,32 @@ export class Mining extends StreamScene {
 	public stations: Station[] = [
 		new Station({
 			name: "Refinery",
+			variant: "Station_00",
 		}),
 		new Station({
 			name: "Sell Station",
 			pos: vec(780_621, 880_420),
+			variant: "Station_01",
 		}),
 		new Station({
 			name: "Fuel Depot",
-			pos: vec(-10_128, 827_008),
+			pos: vec(-100_128, 0),
+			variant: "Station_02",
 		}),
 	];
+
+	private hud: PlayerInGameHud;
 
 	constructor() {
 		super();
 
 		document.querySelector(".tutorial")?.classList.remove("hid");
+
+		this.hud = new PlayerInGameHud({ player: this.player, radius: 300 });
 	}
 
 	override onInitialize(engine: Engine): void {
+		engine.add(this.hud);
 		this.add(this.player);
 		this.setStreamTarget(this.player);
 
@@ -101,12 +110,27 @@ export class Mining extends StreamScene {
 		t.start();
 	}
 
+	private updateTick = 0;
+	onPreUpdate(engine: Engine, elapsed: number): void {
+		if (this.updateTick > 500) {
+			const asteroids = this.asteroids
+				.sort((a, b) => {
+					return this.player.pos.distance(a.pos) - this.player.pos.distance(b.pos);
+				})
+				.slice(0, 5);
+
+			this.hud.setMarkers([...this.stations, ...asteroids]);
+			this.updateTick = 0;
+		}
+
+		this.updateTick += Math.round(elapsed);
+	}
+
 	onDeactivate(context: SceneActivationContext) {
 		this.autosave();
 	}
 
 	autosave() {
-		console.log("saving scene");
 		const asteroids = this.asteroids
 			?.filter((streamable) => streamable instanceof Asteroid)
 			.map((asteroid) => {
@@ -129,6 +153,15 @@ export class Mining extends StreamScene {
 
 		SaveSystem.setState("asteroids", asteroids ?? []);
 		this.player.autosave();
-		// SaveSystem.setState("stations", this.stations);
+
+		SaveSystem.setState(
+			"stations",
+			this.stations.map((station) => {
+				return {
+					name: station.name,
+					refining: station.refining,
+				};
+			}),
+		);
 	}
 }

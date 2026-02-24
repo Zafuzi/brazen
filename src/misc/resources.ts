@@ -25,6 +25,9 @@ export const Images = {
 	Star_01: new ImageSource("./stars/star_b.png"),
 	Star_02: new ImageSource("./stars/star_c.png"),
 	Star_03: new ImageSource("./stars/star_d.png"),
+
+	AsteroidIcon: new ImageSource("./icons/asteroidIcon.png"),
+	StationIcon: new ImageSource("./icons/stationIcon.png"),
 } as const;
 
 export const Sounds = {

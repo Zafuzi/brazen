@@ -1,34 +1,37 @@
 <script setup lang="ts">
 import { Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
+import type { Player } from "../actors/player";
 import { Mining } from "../levels/mining";
 import { formatAmount } from "../lib/math";
+import { config } from "../main";
 
-const props = defineProps<{ engine: Engine }>();
-const isMiningActive = ref(false);
-const inventory = ref<{ name: string, amount: number }[]>([]);
-const isOpen = ref(false);
+const props = defineProps<{ engine: Engine; player?: Player; open?: boolean }>();
+const inventory = ref<{ name: string; amount: number }[]>([]);
+const isOpen = ref(props.open ?? false);
+
+const width = ref(config.inventory.width);
+const height = ref(config.inventory.height);
 
 const syncInventory = () => {
 	const scene = props.engine.currentScene;
-	if (!(scene instanceof Mining)) {
-		isMiningActive.value = false;
+	const player: Player | undefined = props.player ?? (scene as Mining).player;
+
+	if (!player) {
 		return;
 	}
 
-	isMiningActive.value = true;
-
 	inventory.value = [];
-	Array.from(scene.player.inventory).map((item) => {
+	Array.from(player.inventory).map((item) => {
 		inventory.value.push({
 			name: item[0],
 			amount: item[1],
-		})
-	})
+		});
+	});
 
 	inventory.value = inventory.value.sort((a, b) => {
 		return b.amount - a.amount;
-	})
+	});
 };
 
 const updateSubscription = props.engine.on("postupdate", syncInventory);
@@ -40,7 +43,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-	<div :class="{panel: true, player_inventory: true, open: isOpen}">
+	<div :class="{ panel: true, player_inventory: true, open: isOpen }">
 		<h3 @click="isOpen = !isOpen">Inventory</h3>
 		<div class="panel player_inventory_container">
 			<div class="player_inventory_item" v-for="item in inventory" :key="item.name">
@@ -51,14 +54,14 @@ onBeforeUnmount(() => {
 	</div>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
 .player_inventory {
 	position: absolute;
 	bottom: var(--inset-bottom);
 	left: var(--inset-left);
 
-	max-width: 300px;
-	height: 300px;
+	max-width: v-bind(width);
+	height: v-bind(height);
 
 	width: 100%;
 
@@ -68,17 +71,16 @@ onBeforeUnmount(() => {
 	gap: 8px;
 
 	&:not(.open) {
-	    height: min-content;
-	    .player_inventory_container {
+		height: min-content;
+		.player_inventory_container {
 			display: none;
 			visibility: hidden;
 			height: 0;
 		}
- 	}
-
+	}
 
 	h3 {
-	    width: 100%;
+		width: 100%;
 		margin: 0 auto;
 		color: white;
 		text-align: center;
@@ -99,9 +101,19 @@ onBeforeUnmount(() => {
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-
 		padding: 8px;
-		background-color: var(--primary);
+		border: 2px solid var(--primary);
+		color: var(--primary-text);
+
+		cursor: pointer;
+		user-select: none;
+
+		&.active,
+		&:hover {
+			border-color: transparent;
+			background-color: var(--primary);
+			color: white;
+		}
 	}
 }
 </style>
