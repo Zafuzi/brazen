@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
 <style lang="less" scoped>
 .player_inventory {
 	position: absolute;
-	bottom: var(--inset-bottom);
+	bottom: calc(var(--inset-bottom) + 100px);
 	left: var(--inset-left);
 
 	max-width: v-bind(width);

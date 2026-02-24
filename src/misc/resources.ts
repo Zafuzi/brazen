@@ -28,6 +28,8 @@ export const Images = {
 
 	AsteroidIcon: new ImageSource("./icons/asteroidIcon.png"),
 	StationIcon: new ImageSource("./icons/stationIcon.png"),
+	AutoPilotIcon: new ImageSource("./icons/AutoPilotIcon.png"),
+	MatchVelocityIcon: new ImageSource("./icons/MatchVelocityIcon.png"),
 } as const;
 
 export const Sounds = {

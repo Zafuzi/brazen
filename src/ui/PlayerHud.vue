@@ -24,6 +24,8 @@ const syncPlayer = () => {
 		fuel: pl.fuel,
 		credits: pl.credits,
 		angularVelocity: pl.angularVelocity,
+		autoPilotEnabled: pl.autoPilotEnabled,
+		matchingVelocity: pl.shouldMatchVelocity,
 	};
 };
 
@@ -37,6 +39,23 @@ onBeforeUnmount(() => {
 
 <template>
 	<div v-if="isMiningActive" class="player_motion">
+		<div class="player_motion_row">
+			<div class="player_motion_row_data">
+				<img
+					:style="{ opacity: player.autoPilotEnabled ? 1 : 0.5 }"
+					src="/icons/AutoPilotIcon.png"
+					alt="autopilot icon"
+				/>
+
+				<img
+					:style="{ opacity: player.matchingVelocity ? 1 : 0.5 }"
+					:title="player.matchingVelocity ? 'Matching Target Velocity' : 'Manual Velocity Control'"
+					src="/icons/MatchVelocityIcon.png"
+					alt="match velocity icon"
+				/>
+			</div>
+		</div>
+
 		<div class="player_motion_row">
 			<div class="player_motion_row_data">
 				<p>{{ formatNumberFast(player.credits) }} Credits</p>
@@ -67,14 +86,16 @@ onBeforeUnmount(() => {
 
 	height: auto;
 
-	display: flex;
-	flex-flow: row nowrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 	align-items: center;
 	justify-content: center;
 	text-align: center;
 	flex-flow: row nowrap;
 
-	gap: 24px;
+	width: 100%;
+
+	gap: 8px;
 	padding: 12px;
 	z-index: var(--panel-layer);
 
@@ -86,12 +107,12 @@ onBeforeUnmount(() => {
 		justify-content: center;
 		text-align: center;
 
-		gap: 8px;
+		gap: 4px;
 
 		background-color: color-mix(in srgb, var(--primary) 10%, rgba(0, 0, 0, 0.8));
 		color: var(--primary);
 		border: 2px solid var(--primary);
-		padding: 8px;
+		padding: 4px;
 		border-radius: 100vw;
 
 		.player_motion_row_data {
@@ -100,7 +121,7 @@ onBeforeUnmount(() => {
 			align-items: center;
 			justify-content: space-evenly;
 
-			gap: 8px;
+			gap: 4px;
 
 			p {
 				color: var(--primary);

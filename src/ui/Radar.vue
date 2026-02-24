@@ -162,7 +162,7 @@ function clickAsteroid(asteroidId: number) {
 .radar {
 	position: absolute;
 	top: var(--inset-top);
-	bottom: var(--inset-bottom);
+	bottom: calc(var(--inset-bottom) + 100px);
 	right: var(--inset-right);
 
 	max-width: 30%;

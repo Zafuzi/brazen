@@ -52,7 +52,7 @@ export class Player extends Actor {
 	public selectedItem: Actor | undefined;
 	public isDocked: boolean = false;
 
-	private autoPilotEnabled: boolean = false;
+	public autoPilotEnabled: boolean = false;
 
 	private thrustSound: Sound = Sounds.ThrustSound;
 	private miningSound: Sound = Sounds.MiningSound;
@@ -64,7 +64,8 @@ export class Player extends Actor {
 	public credits = 0;
 
 	private currentCollisions = new Set<Entity>();
-	private reverse: boolean = false;
+	public reverse: boolean = false;
+	public shouldMatchVelocity: boolean = false;
 
 	constructor() {
 		super({
@@ -119,8 +120,12 @@ export class Player extends Actor {
 
 		engine.input.keyboard.on("press", (event) => {
 			const key = event.key;
-			if (key === Keys.Space) {
+			if (key === Keys.Space && this.selectedItem) {
 				this.reverse = !this.reverse;
+			}
+
+			if (key === Keys.M && this.selectedItem) {
+				this.shouldMatchVelocity = !this.shouldMatchVelocity;
 			}
 		});
 	}
@@ -248,11 +253,26 @@ export class Player extends Actor {
 		this.angularVelocity *= 0.98;
 		this.updateTick += Math.round(elapsed);
 
+		this.matchSelectedVelocity();
+
 		if (this.updateTick > 1_000) {
 			this.updateTick = 0;
 		}
 
 		this.fuel = clamp(this.fuel, 0, 100);
+	}
+
+	matchSelectedVelocity() {
+		if (!this.selectedItem || !this.shouldMatchVelocity) return;
+
+		const diff = this.selectedItem.vel.sub(this.vel);
+
+		this.vel = this.selectedItem.vel;
+		this.acc = diff.scale(0.01);
+
+		if (diff.magnitude > 0.1) {
+			this.useFuel();
+		}
 	}
 
 	dockTo(target: Actor) {
@@ -272,6 +292,7 @@ export class Player extends Actor {
 	}
 
 	thrustForwardStart = () => {
+		this.resetAutoPilot();
 		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(100);
 		this.thrust.graphics.opacity = 1;
 		this.thrustSound.volume = 0.5;
@@ -279,26 +300,31 @@ export class Player extends Actor {
 	};
 
 	thrustReverseStart = () => {
+		this.resetAutoPilot();
 		this.acc = Vector.fromAngle(this.rotation - Math.PI / 2).scale(-10);
 		this.thrustSound.volume = 0.2;
 		this.useFuel();
 	};
 
 	thrustTurnLeft = () => {
+		this.resetAutoPilot();
 		this.angularVelocity += -0.1;
-		this.autoPilotEnabled = false;
-		this.reverse = false;
 		this.thrustSound.volume = 0.3;
 		this.useFuel();
 	};
 
 	thrustTurnRight = () => {
+		this.resetAutoPilot();
 		this.angularVelocity += 0.1;
-		this.autoPilotEnabled = false;
-		this.reverse = false;
 		this.thrustSound.volume = 0.3;
 		this.useFuel();
 	};
+
+	resetAutoPilot() {
+		this.reverse = false;
+		this.shouldMatchVelocity = false;
+		this.autoPilotEnabled = false;
+	}
 
 	thrustEnd = () => {
 		this.acc = Vector.Zero;
@@ -336,13 +362,13 @@ export class Player extends Actor {
 	};
 
 	selectItem = (target: Actor) => {
+		this.resetAutoPilot();
 		this.selectedItem = target;
 		this.autoPilotEnabled = true;
-		this.reverse = false;
 	};
 
 	deselectItem = () => {
+		this.resetAutoPilot();
 		this.selectedItem = undefined;
-		this.reverse = false;
 	};
 }
