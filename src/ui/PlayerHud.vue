@@ -43,14 +43,14 @@ onBeforeUnmount(() => {
 			<div class="player_motion_row_data">
 				<img
 					:style="{ opacity: player.autoPilotEnabled ? 1 : 0.5 }"
-					src="/icons/AutoPilotIcon.png"
+					src="./icons/AutoPilotIcon.png"
 					alt="autopilot icon"
 				/>
 
 				<img
 					:style="{ opacity: player.matchingVelocity ? 1 : 0.5 }"
 					:title="player.matchingVelocity ? 'Matching Target Velocity' : 'Manual Velocity Control'"
-					src="/icons/MatchVelocityIcon.png"
+					src="./icons/MatchVelocityIcon.png"
 					alt="match velocity icon"
 				/>
 			</div>
