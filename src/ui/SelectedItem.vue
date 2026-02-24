@@ -29,7 +29,6 @@ const syncSelected = () => {
 		}
 
 		selected.value = {
-			type: pl.constructor.name,
 			name,
 			amount,
 			distance,
@@ -54,14 +53,18 @@ function dockToStation() {
 	scene.player.dockTo(selected.value);
 	props.toggleRefinery();
 }
+
+function canDock(range: number) {
+	return ["Refinery", "Fuel Depot", "Sell Station"].includes(selected.value.name) && isInRange(range);
+}
 </script>
 
 <template>
 	<div v-if="selected" class="panel selectedItem">
-		<h2>{{ selected.name }} {{ selected.type }}</h2>
+		<h2>{{ selected.name }}</h2>
 		<p class="selectedItem_amount" v-if="selected.amount">{{ selected.amount }}</p>
 		<p class="selectedItem_distance">{{ selected.distance }}</p>
-		<div v-if="selected.type == 'Station' && isInRange(1_000)">
+		<div v-if="canDock(1_000)">
 			<button class="button button-primary" @click="dockToStation">Dock</button>
 		</div>
 	</div>
