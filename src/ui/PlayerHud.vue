@@ -3,6 +3,7 @@ import { type Engine } from "excalibur";
 import { onBeforeUnmount, ref } from "vue";
 import { Mining } from "../levels/mining";
 import { formatNumberFast, formatVelocity } from "../lib/math";
+import { Images } from "../misc/resources";
 
 const props = defineProps<{ engine: Engine }>();
 const isMiningActive = ref(false);
@@ -43,14 +44,14 @@ onBeforeUnmount(() => {
 			<div class="player_motion_row_data">
 				<img
 					:style="{ opacity: player.autoPilotEnabled ? 1 : 0.5 }"
-					src="./icons/AutoPilotIcon.png"
+					:src="Images.AutoPilotIcon.image.src"
 					alt="autopilot icon"
 				/>
 
 				<img
 					:style="{ opacity: player.matchingVelocity ? 1 : 0.5 }"
 					:title="player.matchingVelocity ? 'Matching Target Velocity' : 'Manual Velocity Control'"
-					src="./icons/MatchVelocityIcon.png"
+					:src="Images.MatchVelocityIcon.image.src"
 					alt="match velocity icon"
 				/>
 			</div>
