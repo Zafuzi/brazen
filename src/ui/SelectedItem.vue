@@ -45,8 +45,8 @@ onBeforeUnmount(() => {
 	updateSubscription.close();
 });
 
-function canInterface() {
-	return selected.value.rawDistance < 500 && selected.value.type === "Station";
+function isInRange(range: number) {
+	return selected.value.rawDistance < range;
 }
 
 function dockToStation() {
@@ -58,10 +58,10 @@ function dockToStation() {
 
 <template>
 	<div v-if="selected" class="panel selectedItem">
-		<h2>{{ selected.name }}</h2>
+		<h2>{{ selected.name }} {{selected.type}}</h2>
 		<p class="selectedItem_amount" v-if="selected.amount">{{ selected.amount }}</p>
 		<p class="selectedItem_distance">{{ selected.distance }}</p>
-		<div v-if="canInterface()">
+		<div v-if="selected.type == 'Station' && isInRange(1_000)">
 			<button class="button button-primary" @click="dockToStation">Dock</button>
 		</div>
 	</div>
